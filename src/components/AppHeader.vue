@@ -3,7 +3,7 @@
         <div>
             <div class="container">
                 <a class="navbar-brand" href="/">Conduit</a>
-                <ul v-if="isLogin" class="nav navbar-nav pull-xs-right">
+                <ul v-if="userStore.isLogined" class="nav navbar-nav pull-xs-right">
                     <li class="nav-item">
                         <RouterLink class="nav-link" exact active-class="active" to="/">
                             Home
@@ -57,7 +57,9 @@
 </template>
     
 <script setup lang='ts'>
-let isLogin: boolean = true;
+import { useUserStore } from '@/store';
+const userStore = useUserStore()
+
 </script>
     
 <style></style>

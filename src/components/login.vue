@@ -47,14 +47,16 @@
 <script setup lang="ts">
 import { login } from "@/api/user";
 import { ref } from "vue";
+import { useUserStore } from "@/store/index";
 let email = ref<string>("");
 let password = ref<string>("");
+const userStore = useUserStore();
 function handleLogin() {
   login({
     email: email.value,
     password: password.value,
   }).then((res) => {
-    console.log(res);
+    userStore.setAuth(res);
   });
 }
 </script>

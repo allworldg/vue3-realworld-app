@@ -3,7 +3,7 @@
     <div>
       <div class="container">
         <a class="navbar-brand" href="/">Conduit</a>
-        <ul v-if="userStore.isLogined" class="nav navbar-nav pull-xs-right">
+        <ul v-if="userStore.getIsLogined" class="nav navbar-nav pull-xs-right">
           <li class="nav-item">
             <RouterLink class="nav-link" exact active-class="active" to="/">
               Home
@@ -29,7 +29,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/profile/eric-simons">
-              <img src="" class="user-pic" />
+              <img :src="userStore.user?.bio" class="user-pic" />
               Eric Simons
             </a>
           </li>

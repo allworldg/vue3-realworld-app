@@ -6,7 +6,7 @@ const service: AxiosInstance = axios.create({
 });
 service.interceptors.request.use(
   (config) => {
-    const cookie = getCookie();
+    let cookie = getCookie();
     if (cookie !== undefined) {
       config.headers["Authorization"] = cookie;
     }

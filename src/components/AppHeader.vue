@@ -2,7 +2,7 @@
   <nav class="navbar navbar-light">
     <div>
       <div class="container">
-        <a class="navbar-brand" href="/">Conduit</a>
+        <RouterLink class="navbar-brand" to="/">Conduit</RouterLink>
         <ul v-if="userStore.getIsLogined" class="nav navbar-nav pull-xs-right">
           <li class="nav-item">
             <RouterLink class="nav-link" exact active-class="active" to="/">
@@ -21,11 +21,6 @@
               <i class="ion-gear-a"></i>
               &nbsp;Settings
             </RouterLink>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/settings">
-              <i class="ion-gear-a"></i>&nbsp;Settings
-            </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/profile/eric-simons">

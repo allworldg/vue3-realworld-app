@@ -20,11 +20,11 @@ export const useUserStore = defineStore("user", {
     },
   },
   actions: {
-    setAuth(user: User) {
-      this.user = user;
-      this.token = user.token;
+    setAuth(user_data: User) {
+      this.user = user_data;
+      this.token = user_data.token;
       this.isLogined = true;
-      setCookie(`${TOKEN_PREFIX}${user.token}`);
+      setCookie(`${TOKEN_PREFIX}${user_data.token}`);
     },
   },
 });

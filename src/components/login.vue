@@ -31,7 +31,6 @@
               />
             </fieldset>
             <button
-              type="submit"
               class="btn btn-lg btn-primary pull-xs-right"
               @click="handleLogin"
             >
@@ -48,15 +47,22 @@
 import { login } from "@/api/user";
 import { ref } from "vue";
 import { useUserStore } from "@/store/index";
+import { useRouter, useRoute } from "vue-router";
+const route = useRoute();
+const router = useRouter();
 let email = ref<string>("");
 let password = ref<string>("");
 const userStore = useUserStore();
 function handleLogin() {
+  console.log("click handleLogin")
   login({
     email: email.value,
     password: password.value,
   }).then((res) => {
-    userStore.setAuth(res);
+    userStore.setAuth(res.user);
+    router.push({
+      path: (route.query?.redirect as string) || "/",
+    });
   });
 }
 </script>

@@ -17,7 +17,7 @@
             </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" active-class="active" to="/">
+            <RouterLink class="nav-link" active-class="active" to="/settings">
               <i class="ion-gear-a"></i>
               &nbsp;Settings
             </RouterLink>

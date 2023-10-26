@@ -1,5 +1,5 @@
 import requests from "@/utils/requests";
-import { Article, ArticlesParams } from "@/types/articles";
+import { Article, ArticlesParams, ResponseTags } from "@/types/articles";
 import { GET_TAGS, REQUEST_ARTICLES } from "@/common/url";
 
 export function getArticles(params: ArticlesParams): Promise<Array<Article>> {
@@ -11,7 +11,7 @@ export function getArticles(params: ArticlesParams): Promise<Array<Article>> {
   });
 }
 
-export function getTags(): Promise<Array<any>> {
+export function getTags(): Promise<ResponseTags> {
   return requests({
     method: "get",
     url: GET_TAGS,

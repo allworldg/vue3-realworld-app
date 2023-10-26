@@ -69,14 +69,9 @@
             <p>Popular Tags</p>
             <div v-if="loading_tags">Loading tags...</div>
             <div v-else class="tag-list">
-              <a href="" class="tag-pill tag-default">programming</a>
-              <a href="" class="tag-pill tag-default">javascript</a>
-              <a href="" class="tag-pill tag-default">emberjs</a>
-              <a href="" class="tag-pill tag-default">angularjs</a>
-              <a href="" class="tag-pill tag-default">react</a>
-              <a href="" class="tag-pill tag-default">mean</a>
-              <a href="" class="tag-pill tag-default">node</a>
-              <a href="" class="tag-pill tag-default">rails</a>
+              <a href="" v-for="tag in tags" class="tag-pill tag-default">
+                {{ tag }}
+              </a>
             </div>
           </div>
         </div>
@@ -104,7 +99,7 @@ onMounted(() => {
     loading_articles.value = false;
   });
   getTags().then((res) => {
-    tags.value = res;
+    tags.value = res.tags;
     loading_tags.value = false;
   });
 });

@@ -17,8 +17,10 @@ export interface Article {
   favoritesCount: number;
   slug: string;
   tagList: Array;
-  title:string;
-  updatedAt:string
+  title: string;
+  updatedAt: string;
 }
 
-
+export interface ResponseTags {
+  tags: Array;
+}

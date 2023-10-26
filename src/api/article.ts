@@ -1,6 +1,6 @@
 import requests from "@/utils/requests";
 import { Article, ArticlesParams } from "@/types/articles";
-import { REQUEST_ARTICLES } from "@/common/url";
+import { GET_TAGS, REQUEST_ARTICLES } from "@/common/url";
 
 export function getArticles(params: ArticlesParams): Promise<Array<Article>> {
   return requests({
@@ -8,5 +8,12 @@ export function getArticles(params: ArticlesParams): Promise<Array<Article>> {
     url: REQUEST_ARTICLES,
     data: {},
     params,
+  });
+}
+
+export function getTags(): Promise<Array<any>> {
+  return requests({
+    method: "get",
+    url: GET_TAGS,
   });
 }

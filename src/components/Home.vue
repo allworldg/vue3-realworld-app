@@ -21,7 +21,7 @@
           </div>
 
           <div class="article-preview" v-if="loading_articles">
-            loading articles...
+            Loading articles...
           </div>
           <div v-else>
             <div class="article-preview">
@@ -67,8 +67,8 @@
         <div class="col-md-3">
           <div class="sidebar">
             <p>Popular Tags</p>
-
-            <div class="tag-list">
+            <div v-if="loading_tags">Loading tags...</div>
+            <div v-else class="tag-list">
               <a href="" class="tag-pill tag-default">programming</a>
               <a href="" class="tag-pill tag-default">javascript</a>
               <a href="" class="tag-pill tag-default">emberjs</a>
@@ -86,12 +86,13 @@
 </template>
 
 <script setup lang="ts">
-import { getArticles } from "@/api/article";
+import { getArticles, getTags } from "@/api/article";
 import { Article, ArticlesParams } from "@/types/articles";
 import { ref } from "vue";
 import { onMounted } from "vue";
 let params = ref<ArticlesParams>({ limit: 10 });
 let articles = ref<Array<Article>>([]);
+let tags = ref<Array<any>>([]);
 let loading_articles = ref<boolean>(true);
 let loading_tags = ref<boolean>(true);
 
@@ -99,9 +100,12 @@ onMounted(() => {
   loading_articles.value = true;
   loading_tags.value = true;
   getArticles(params.value).then((res) => {
-    console.log(res);
     articles.value = res;
     loading_articles.value = false;
+  });
+  getTags().then((res) => {
+    tags.value = res;
+    loading_tags.value = false;
   });
 });
 </script>

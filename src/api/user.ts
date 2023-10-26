@@ -1,6 +1,6 @@
 import request from "@/utils/requests";
 import { loginUser } from "@/types/user";
-import { UserResponse } from "@/types/api";
+import { UserResponse } from "@/types/user";
 import { REQUEST_LOGIN, REQUEST_GETUSER } from "@/common/url";
 export function login(loginUser: loginUser): Promise<UserResponse> {
   return request({
@@ -10,7 +10,6 @@ export function login(loginUser: loginUser): Promise<UserResponse> {
       user: loginUser,
     },
   });
-  // return request.post<any, loginUser>(URL_LOGIN);
 }
 
 export function getUser(): Promise<UserResponse> {

@@ -11,3 +11,6 @@ export interface User {
   username: string;
 }
 
+export interface UserResponse {
+  user: User;
+}

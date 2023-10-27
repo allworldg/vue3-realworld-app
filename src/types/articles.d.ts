@@ -24,3 +24,8 @@ export interface Article {
 export interface ResponseTags {
   tags: Array;
 }
+
+export interface ResponseArticles {
+  articles: Array<Article>;
+  articlesCount:number;
+}

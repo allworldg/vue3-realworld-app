@@ -2,6 +2,7 @@ import { RouteRecordRaw, createRouter, createWebHashHistory } from "vue-router";
 import { getCookie, removeCookie } from "@/utils/auth";
 import { useUserStore } from "@/store/index";
 import { getUser } from "@/api/user";
+import Home from "@/components/Home.vue";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
@@ -25,6 +26,12 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/settings",
     component: () => import("@/components/Settings.vue"),
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    redirect: "/",
+    component: Home,
+    children: [],
   },
 ];
 const whiteList = ["/", "/login", "/register"];

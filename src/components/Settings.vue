@@ -32,6 +32,9 @@
                 ></textarea>
               </fieldset>
               <fieldset class="form-group">
+                <input class="form-control form-control-lg" required type="email" placeholder="Email">
+              </fieldset>
+              <fieldset class="form-group">
                 <input
                   class="form-control form-control-lg"
                   type="password"

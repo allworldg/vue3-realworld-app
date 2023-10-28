@@ -11,7 +11,7 @@
         <div class="col-md-9">
           <div class="feed-toggle">
             <ul class="nav nav-pills outline-active">
-              <li class="nav-item">
+              <li v-if="userStore.getIsLogined" class="nav-item">
                 <a href="" class="nav-link">Your Feed</a>
               </li>
               <li class="nav-item">
@@ -58,7 +58,8 @@ import Articles from "@/components/Articles.vue";
 import { ref } from "vue";
 import { onMounted } from "vue";
 import AppPagination from "./AppPagination.vue";
-import { timeStamp } from "console";
+import { useUserStore } from "@/store";
+const userStore = useUserStore();
 let params = ref<ArticlesParams>({ limit: 10 });
 
 let articles = ref<Array<Article>>([]);

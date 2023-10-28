@@ -1,0 +1,47 @@
+<template>
+  <div
+    class="article-preview"
+    v-for="(article, index) in articles"
+    :key="index"
+  >
+    <div class="article-meta">
+      <a :href="article.author.username">
+        <img :src="article.author.image" />
+      </a>
+      <div class="info">
+        <a :href="article.author.username" class="author">
+          {{ article.author.username }}
+        </a>
+        <span class="date">{{ article.createdAt }}</span>
+      </div>
+      <button class="btn btn-outline-primary btn-sm pull-xs-right">
+        <i class="ion-heart"></i> {{ article.favoritesCount }}
+      </button>
+    </div>
+    <a :href="`article/${article.slug}`" class="preview-link">
+      <h1>{{ article.title }}</h1>
+      <p>{{ article.description }}</p>
+      <span>Read more...</span>
+      <ul class="tag-list">
+        <li
+          class="tag-default tag-pill tag-outline"
+          v-for="(item, index) in article.tagList"
+          :key="index"
+        >
+          {{ item }}
+        </li>
+      </ul>
+    </a>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { Article } from "@/types/articles";
+
+//@ts-ignore
+const props = defineProps({
+  articles: Array<Article>,
+});
+</script>
+
+<style></style>

@@ -11,7 +11,7 @@
           </li>
 
           <li class="nav-item">
-            <RouterLink class="nav-link" active-class="active" to="/editor">
+            <RouterLink class="nav-link"  active-class="active" to="/editor">
               <i class="ion-compose"></i>
               &nbsp;New Article
             </RouterLink>

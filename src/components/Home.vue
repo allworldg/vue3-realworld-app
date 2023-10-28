@@ -24,43 +24,14 @@
             Loading articles...
           </div>
           <div v-else>
-            <div class="article-preview">
-              <div class="article-meta">
-                <a href="/profile/eric-simons"
-                  ><img src="http://i.imgur.com/Qr71crq.jpg"
-                /></a>
-                <div class="info">
-                  <a href="/profile/eric-simons" class="author">Eric Simons</a>
-                  <span class="date">January 20th</span>
-                </div>
-                <button class="btn btn-outline-primary btn-sm pull-xs-right">
-                  <i class="ion-heart"></i> 29
-                </button>
-              </div>
-              <a
-                href="/article/how-to-build-webapps-that-scale"
-                class="preview-link"
-              >
-                <h1>How to build webapps that scale</h1>
-                <p>This is the description for the post.</p>
-                <span>Read more...</span>
-                <ul class="tag-list">
-                  <li class="tag-default tag-pill tag-outline">realworld</li>
-                  <li class="tag-default tag-pill tag-outline">
-                    implementations
-                  </li>
-                </ul>
-              </a>
-            </div>
-
-            <ul class="pagination">
-              <li class="page-item active">
-                <a class="page-link" href="">1</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="">2</a>
-              </li>
-            </ul>
+            <Articles :articles="articles"></Articles>
+          </div>
+          <div v-show="isShowPage">
+            <AppPagination
+              :pages="pages"
+              :cur-page="curPage"
+              @change-page="changePage"
+            ></AppPagination>
           </div>
         </div>
 
@@ -83,20 +54,34 @@
 <script setup lang="ts">
 import { getArticles, getTags } from "@/api/article";
 import { Article, ArticlesParams } from "@/types/articles";
+import Articles from "@/components/Articles.vue";
 import { ref } from "vue";
 import { onMounted } from "vue";
+import AppPagination from "./AppPagination.vue";
 let params = ref<ArticlesParams>({ limit: 10 });
+
 let articles = ref<Array<Article>>([]);
-let tags = ref<Array<any>>([]);
 let loading_articles = ref<boolean>(true);
+
 let loading_tags = ref<boolean>(true);
+let tags = ref<Array<any>>([]);
+
+let pages = ref<number>(0);
+let curPage = ref<number>(1);
+let isShowPage = ref<boolean>(false);
+
+function changePage(page: number) {
+  curPage.value = page;
+}
 
 onMounted(() => {
   loading_articles.value = true;
   loading_tags.value = true;
   getArticles(params.value).then((res) => {
-    articles.value = res;
     loading_articles.value = false;
+    isShowPage.value = true;
+    articles.value = res.articles;
+    pages.value = res.articlesCount;
   });
   getTags().then((res) => {
     tags.value = res.tags;

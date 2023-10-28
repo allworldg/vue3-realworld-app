@@ -20,6 +20,7 @@
                 <input
                   type="text"
                   class="form-control form-control-lg"
+                  required
                   placeholder="Username"
                 />
               </fieldset>
@@ -42,8 +43,10 @@
               </button>
             </fieldset>
           </form>
-          <hr/>
-          <button class="btn btn-outline-danger">Or Click here to logout.</button>
+          <hr />
+          <button class="btn btn-outline-danger">
+            Or Click here to logout.
+          </button>
         </div>
       </div>
     </div>

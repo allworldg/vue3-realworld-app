@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import { getCookie } from "./auth";
 const service: AxiosInstance = axios.create({
   baseURL: "https://api.realworld.io/api/",
-  timeout: 5000,
+  timeout: 10000,
 });
 service.interceptors.request.use(
   (config) => {

@@ -1,7 +1,7 @@
 <template>
   <ul class="pagination">
     <li
-      v-for="(page, index) in pageCounts"
+      v-for="(page, index) in pages"
       :class="pageClass(page)"
       :key="index"
       @click.prevent="changeCurPage(page)"
@@ -12,9 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 const emit = defineEmits(["changePage"]);
-const range = 10;
 //@ts-ignore
 let props = defineProps<{
   pages: number;
@@ -26,13 +24,6 @@ function pageClass(page: number) {
     active: props.curPage == page,
   };
 }
-let pageCounts = computed(() => {
-  let result = Math.floor(props.pages / range);
-  if (props.pages % range != 0) {
-    result++;
-  }
-  return result;
-});
 function changeCurPage(page: number) {
   if (page == props.curPage) {
     return;

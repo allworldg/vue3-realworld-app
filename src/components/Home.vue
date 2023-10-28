@@ -58,6 +58,7 @@ import Articles from "@/components/Articles.vue";
 import { ref } from "vue";
 import { onMounted } from "vue";
 import AppPagination from "./AppPagination.vue";
+import { timeStamp } from "console";
 let params = ref<ArticlesParams>({ limit: 10 });
 
 let articles = ref<Array<Article>>([]);
@@ -67,11 +68,22 @@ let loading_tags = ref<boolean>(true);
 let tags = ref<Array<any>>([]);
 
 let pages = ref<number>(0);
+const range = 10;
 let curPage = ref<number>(1);
 let isShowPage = ref<boolean>(false);
 
 function changePage(page: number) {
   curPage.value = page;
+  params.value.offset = (curPage.value - 1) * range;
+  loading_articles.value = true;
+  getArticles(params.value).then((res) => {
+    loading_articles.value = false;
+    articles.value = res.articles;
+    pages.value = Math.floor(res.articlesCount / 10);
+    if (res.articlesCount % 10 != 0) {
+      pages.value++;
+    }
+  });
 }
 
 onMounted(() => {
@@ -81,7 +93,10 @@ onMounted(() => {
     loading_articles.value = false;
     isShowPage.value = true;
     articles.value = res.articles;
-    pages.value = res.articlesCount;
+    pages.value = Math.floor(res.articlesCount / 10);
+    if (res.articlesCount % 10 != 0) {
+      pages.value++;
+    }
   });
   getTags().then((res) => {
     tags.value = res.tags;

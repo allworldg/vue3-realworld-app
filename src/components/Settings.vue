@@ -5,7 +5,7 @@
         <div class="col-md-6 offset-md-3 col-xs-12">
           <h1 class="text-xs-center">Your Settings</h1>
           <ul class="error-messages">
-            <li>The name is required</li>
+            <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
           </ul>
           <form>
             <fieldset>
@@ -82,6 +82,7 @@ const userStore = useUserStore();
 const user = reactive({ ...userStore.getUser! });
 let newPassword = ref<string>("");
 let isUpdating = ref<boolean>(false);
+let errors = ref<Array<String>>([]);
 function handleUpdate() {
   isUpdating.value = true;
   updateUser({
@@ -92,10 +93,14 @@ function handleUpdate() {
       password: newPassword.value,
       image: user.image,
     },
-  }).then((res) => {
-    userStore.setAuth(res.user);
-    isUpdating.value = false;
-  });
+  })
+    .then((res) => {
+      userStore.setAuth(res.user);
+      isUpdating.value = false;
+    })
+    .catch((e) => {
+      errors.value.push(e.response.data);
+    });
 }
 </script>
 

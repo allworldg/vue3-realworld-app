@@ -14,6 +14,7 @@
                   type="text"
                   class="form-control"
                   placeholder="URL of profile picture"
+                  v-model="user.image"
                 />
               </fieldset>
               <fieldset class="form-group">
@@ -22,6 +23,7 @@
                   class="form-control form-control-lg"
                   required
                   placeholder="Username"
+                  v-model="user.username"
                 />
               </fieldset>
               <fieldset class="form-group">
@@ -29,16 +31,24 @@
                   rows="8"
                   class="form-control form-control-lg"
                   placeholder="short bio about you"
+                  v-model="user.bio"
                 ></textarea>
               </fieldset>
               <fieldset class="form-group">
-                <input class="form-control form-control-lg" required type="email" placeholder="Email">
+                <input
+                  class="form-control form-control-lg"
+                  required
+                  type="email"
+                  placeholder="Email"
+                  v-model="user.email"
+                />
               </fieldset>
               <fieldset class="form-group">
                 <input
                   class="form-control form-control-lg"
                   type="password"
                   placeholder="New Password"
+                  v-model="newPassword"
                 />
               </fieldset>
               <button class="btn btn-lg btn-primary pull-xs-right">
@@ -56,6 +66,13 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useUserStore } from "@/store";
+import { User } from "@/types/user";
+import { ref } from "vue";
+const userStore = useUserStore();
+const user = ref<User>(userStore.getUser!);
+let newPassword = ref<String>();
+</script>
 
 <style></style>

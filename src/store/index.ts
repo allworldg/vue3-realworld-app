@@ -7,7 +7,7 @@ export const useUserStore = defineStore("user", {
     return {
       isLogined: false,
       user: null as User | null,
-      token: "",
+      token: "" as string | undefined,
     };
   },
 

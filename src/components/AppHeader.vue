@@ -11,7 +11,7 @@
           </li>
 
           <li class="nav-item">
-            <RouterLink class="nav-link"  active-class="active" to="/editor">
+            <RouterLink class="nav-link" active-class="active" to="/editor">
               <i class="ion-compose"></i>
               &nbsp;New Article
             </RouterLink>
@@ -24,8 +24,8 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/profile/eric-simons">
-              <img :src="userStore.user?.bio" class="user-pic" />
-              Eric Simons
+              <img :src="userStore.user?.image" class="user-pic" />
+              {{ userStore.getUser?.username }}
             </a>
           </li>
         </ul>

@@ -1,7 +1,11 @@
 import request from "@/utils/requests";
-import { loginUser } from "@/types/user";
-import { UserResponse } from "@/types/user";
-import { REQUEST_LOGIN, REQUEST_GETUSER, REQUEST_UPDATEUSER } from "@/common/url";
+import { UpdateUser, loginUser } from "@/types/user";
+import { UserResponse,User } from "@/types/user";
+import {
+  REQUEST_LOGIN,
+  REQUEST_GETUSER,
+  REQUEST_UPDATEUSER,
+} from "@/common/url";
 export function login(loginUser: loginUser): Promise<UserResponse> {
   return request({
     url: REQUEST_LOGIN,
@@ -20,10 +24,10 @@ export function getUser(): Promise<UserResponse> {
   });
 }
 
-export function updateUser():Promise<UserResponse>{
+export function updateUser(data: UpdateUser): Promise<UserResponse> {
   return request({
     url: REQUEST_UPDATEUSER,
-    method:"put",
-    
-  })
+    method: "put",
+    data,
+  });
 }

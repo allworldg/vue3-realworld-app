@@ -3,8 +3,6 @@ export interface loginUser {
   password: string;
 }
 
-export interface UpdatedUser {}
-
 export interface User {
   bio: string;
   email: string;
@@ -12,6 +10,10 @@ export interface User {
   token?: string;
   username: string;
   password: string;
+}
+
+export interface UpdateUser {
+  user: User;
 }
 
 export interface UserResponse {

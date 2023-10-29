@@ -11,6 +11,7 @@
             <fieldset>
               <fieldset class="form-group">
                 <input
+                  :disabled="isUpdating"
                   type="text"
                   class="form-control"
                   placeholder="URL of profile picture"
@@ -19,6 +20,7 @@
               </fieldset>
               <fieldset class="form-group">
                 <input
+                  :disabled="isUpdating"
                   type="text"
                   class="form-control form-control-lg"
                   required
@@ -28,6 +30,7 @@
               </fieldset>
               <fieldset class="form-group">
                 <textarea
+                  :disabled="isUpdating"
                   rows="8"
                   class="form-control form-control-lg"
                   placeholder="short bio about you"
@@ -36,6 +39,7 @@
               </fieldset>
               <fieldset class="form-group">
                 <input
+                  :disabled="isUpdating"
                   class="form-control form-control-lg"
                   required
                   type="email"
@@ -45,19 +49,23 @@
               </fieldset>
               <fieldset class="form-group">
                 <input
+                  :disabled="isUpdating"
                   class="form-control form-control-lg"
                   type="password"
                   placeholder="New Password"
                   v-model="newPassword"
                 />
               </fieldset>
-              <button class="btn btn-lg btn-primary pull-xs-right">
+              <button
+                class="btn btn-lg btn-primary pull-xs-right"
+                @click="handleUpdate"
+              >
                 Update Settings
               </button>
             </fieldset>
           </form>
           <hr />
-          <button class="btn btn-outline-danger">
+          <button class="btn btn-outline-danger" @click="">
             Or Click here to logout.
           </button>
         </div>
@@ -68,11 +76,27 @@
 
 <script setup lang="ts">
 import { useUserStore } from "@/store";
-import { User } from "@/types/user";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
+import { updateUser } from "@/api/user";
 const userStore = useUserStore();
-const user = ref<User>(userStore.getUser!);
-let newPassword = ref<String>();
+const user = reactive({ ...userStore.getUser! });
+let newPassword = ref<string>("");
+let isUpdating = ref<boolean>(false);
+function handleUpdate() {
+  isUpdating.value = true;
+  updateUser({
+    user: {
+      email: user.email,
+      username: user.username,
+      bio: user.bio,
+      password: newPassword.value,
+      image: user.image,
+    },
+  }).then((res) => {
+    userStore.setAuth(res.user);
+    isUpdating.value = false;
+  });
+}
 </script>
 
 <style></style>

@@ -65,7 +65,7 @@
             </fieldset>
           </form>
           <hr />
-          <button class="btn btn-outline-danger" @click="">
+          <button class="btn btn-outline-danger" @click="handleLogout">
             Or Click here to logout.
           </button>
         </div>
@@ -78,7 +78,10 @@
 import { useUserStore } from "@/store";
 import { ref, reactive } from "vue";
 import { updateUser } from "@/api/user";
+import { removeCookie } from "@/utils/auth";
+import { useRouter } from "vue-router";
 const userStore = useUserStore();
+const router = useRouter();
 const user = reactive({ ...userStore.getUser! });
 let newPassword = ref<string>("");
 let isUpdating = ref<boolean>(false);
@@ -101,6 +104,11 @@ function handleUpdate() {
     .catch((e) => {
       errors.value.push(e.response.data);
     });
+}
+function handleLogout() {
+  userStore.$reset();
+  removeCookie();
+  router.push({ path: "/", replace: true });
 }
 </script>
 

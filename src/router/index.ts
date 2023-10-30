@@ -28,6 +28,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import("@/components/Settings.vue"),
   },
   {
+    path: "/@:username(\\w+)",
+    component: () => import("@/components/Profile.vue"),
+  },
+  {
     path: "/:pathMatch(.*)*",
     redirect: "/",
     component: Home,
@@ -42,6 +46,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, _from, next) => {
+  console.log(to.path);
   const userStore = useUserStore();
   const hasCookie = getCookie();
   if (hasCookie) {

@@ -23,10 +23,13 @@
             </RouterLink>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/profile/eric-simons">
-              <img :src="userStore.user?.image" class="user-pic" />
+            <RouterLink
+              class="nav-link"
+              :to="`@${userStore.getUser!.username}`"
+            >
+              <img :src="userStore.getUser?.image" class="user-pic" />
               {{ userStore.getUser?.username }}
-            </a>
+            </RouterLink>
           </li>
         </ul>
         <ul v-else class="nav navbar-nav pull-xs-right">

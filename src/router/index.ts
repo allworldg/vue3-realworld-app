@@ -58,14 +58,7 @@ router.beforeEach(async (to, _from, next) => {
           const response = await getUser();
           userStore.setAuth(response.user);
         }
-        if (
-          to.path.startsWith("/@") &&
-          to.path.slice(2, to.path.length) !== userStore.getUser!.username
-        ) {
-          next({ path: "/" });
-        } else {
-          next();
-        }
+        next();
       } catch (error) {
         console.error(error);
         userStore.$reset();

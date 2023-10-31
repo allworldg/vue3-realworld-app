@@ -38,7 +38,7 @@ const routes: RouteRecordRaw[] = [
     children: [],
   },
 ];
-const whiteList = ["/", "/login", "/register"];
+const whiteList = ["/", "/login", "/register", "/article/*"];
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -58,7 +58,14 @@ router.beforeEach(async (to, _from, next) => {
           const response = await getUser();
           userStore.setAuth(response.user);
         }
-        next();
+        if (
+          to.path.startsWith("/@") &&
+          to.path.slice(2, to.path.length) !== userStore.getUser!.username
+        ) {
+          next({ path: "/" });
+        } else {
+          next();
+        }
       } catch (error) {
         console.error(error);
         userStore.$reset();

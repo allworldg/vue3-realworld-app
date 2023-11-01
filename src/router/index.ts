@@ -1,7 +1,7 @@
-import { RouteRecordRaw, createRouter, createWebHashHistory } from "vue-router";
+import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 import { getCookie, removeCookie } from "@/utils/auth";
 import { useUserStore } from "@/store/index";
-import { getUser } from "@/api/user";
+import { getUser, getProfile } from "@/api/user";
 import Home from "@/components/Home.vue";
 const routes: RouteRecordRaw[] = [
   {
@@ -30,6 +30,17 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/@:username(\\w+)",
     component: () => import("@/components/Profile.vue"),
+    beforeEnter: (to, _from, next) => {
+      let userName = to.path.slice(2, to.path.length);
+      getProfile(userName)
+        .then((res) => {
+          to.meta.profile = res.profile;
+          next();
+        })
+        .catch((_e) => {
+          next({ path: "/" });
+        });
+    },
   },
   {
     path: "/:pathMatch(.*)*",
@@ -41,12 +52,11 @@ const routes: RouteRecordRaw[] = [
 const whiteList = ["/", "/login", "/register", "/article/*"];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: routes,
 });
 
 router.beforeEach(async (to, _from, next) => {
-  console.log(to.path);
   const userStore = useUserStore();
   const hasCookie = getCookie();
   if (hasCookie) {

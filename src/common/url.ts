@@ -1,6 +1,8 @@
-export const REQUEST_LOGIN = "users/login";
-export const REQUEST_GETUSER="user"
-export const REQUEST_UPDATEUSER="user"
+export const LOGIN = "users/login";
+export const GETUSER = "user";
+export const UPDATEUSER = "user";
 
-export const REQUEST_ARTICLES="articles"
-export const GET_TAGS = "tags"
+export const GETPROFILE = "profiles";
+
+export const REQUEST_ARTICLES = "articles";
+export const GET_TAGS = "tags";

@@ -1,14 +1,10 @@
 import request from "@/utils/requests";
-import { UpdateUser, loginUser } from "@/types/user";
-import { UserResponse,User } from "@/types/user";
-import {
-  REQUEST_LOGIN,
-  REQUEST_GETUSER,
-  REQUEST_UPDATEUSER,
-} from "@/common/url";
+import { ProfileResponse, UpdateUser, loginUser } from "@/types/user";
+import { UserResponse } from "@/types/user";
+import { LOGIN, GETUSER, UPDATEUSER, GETPROFILE } from "@/common/url";
 export function login(loginUser: loginUser): Promise<UserResponse> {
   return request({
-    url: REQUEST_LOGIN,
+    url: LOGIN,
     method: "post",
     data: {
       user: loginUser,
@@ -18,7 +14,7 @@ export function login(loginUser: loginUser): Promise<UserResponse> {
 
 export function getUser(): Promise<UserResponse> {
   return request({
-    url: REQUEST_GETUSER,
+    url: GETUSER,
     method: "get",
     data: {},
   });
@@ -26,8 +22,15 @@ export function getUser(): Promise<UserResponse> {
 
 export function updateUser(data: UpdateUser): Promise<UserResponse> {
   return request({
-    url: REQUEST_UPDATEUSER,
+    url: UPDATEUSER,
     method: "put",
     data,
+  });
+}
+
+export function getProfile(username: string): Promise<ProfileResponse> {
+  return request({
+    url: `${GETPROFILE}/${username}`,
+    method: "get",
   });
 }

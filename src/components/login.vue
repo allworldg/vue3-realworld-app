@@ -32,7 +32,7 @@
             </fieldset>
             <button
               class="btn btn-lg btn-primary pull-xs-right"
-              @click="handleLogin"
+              @click.prevent="handleLogin"
             >
               Sign in
             </button>
@@ -54,7 +54,7 @@ let email = ref<string>("");
 let password = ref<string>("");
 const userStore = useUserStore();
 function handleLogin() {
-  console.log("click handleLogin")
+  console.log("click handleLogin");
   login({
     email: email.value,
     password: password.value,

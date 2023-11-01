@@ -12,10 +12,22 @@ export interface User {
   password: string;
 }
 
+
+
 export interface UpdateUser {
   user: User;
 }
 
 export interface UserResponse {
   user: User;
+}
+
+export interface Profile {
+  bio: string;
+  following: boolean;
+  image: string;
+  username: string;
+}
+export interface ProfileResponse{
+  profile:Profile
 }

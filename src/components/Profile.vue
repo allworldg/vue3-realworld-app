@@ -78,12 +78,11 @@
 </template>
 
 <script setup lang="ts">
-import { getProfile } from "@/api/user";
 import { useUserStore } from "@/store";
 import { Profile } from "@/types/user";
 import { ref } from "vue";
 import { onMounted } from "vue";
-import { useRoute, onBeforeRouteUpdate } from "vue-router";
+import { useRoute } from "vue-router";
 const userStore = useUserStore();
 const route = useRoute();
 const profile = ref<Profile>({
@@ -96,6 +95,20 @@ onMounted(() => {
   profile.value = route.meta.profile as Profile;
 });
 
+/*
+if use webHashHistoryMode, need to use onBeforeRouteUpdate when set other username in url
+*/
+// onBeforeRouteUpdate((to, _from, next) => {
+//   let userName = to.path.slice(2, to.path.length);
+//   getProfile(userName)
+//     .then((res) => {
+//       profile.value = res.profile;
+//       next();
+//     })
+//     .catch((_e) => {
+//       next({ path: "/" });
+//     });
+// });
 </script>
 
 <style></style>

@@ -5,11 +5,11 @@
     :key="index"
   >
     <div class="article-meta">
-      <a :href="article.author.username">
+      <a :href="`@${article.author.username}`">
         <img :src="article.author.image" />
       </a>
       <div class="info">
-        <a :href="article.author.username" class="author">
+        <a :href="`@${article.author.username}`" class="author">
           {{ article.author.username }}
         </a>
         <span class="date">{{ article.createdAt }}</span>

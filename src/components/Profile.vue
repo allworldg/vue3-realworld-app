@@ -9,13 +9,16 @@
             <p>
               {{ profile!.bio }}
             </p>
-            <button class="btn btn-sm btn-outline-secondary action-btn">
-              <i class="ion-plus-round"></i>
-              &nbsp; Follow {{ profile!.username }}
-            </button>
-            <button class="btn btn-sm btn-outline-secondary action-btn">
+            <button
+              v-if="isCurrentUser"
+              class="btn btn-sm btn-outline-secondary action-btn"
+            >
               <i class="ion-gear-a"></i>
               &nbsp; Edit Profile Settings
+            </button>
+            <button v-else class="btn btn-sm btn-outline-secondary action-btn">
+              <i class="ion-plus-round"></i>
+              &nbsp; Follow {{ profile!.username }}
             </button>
           </div>
         </div>
@@ -78,11 +81,12 @@
 </template>
 
 <script setup lang="ts">
+import { getProfile } from "@/api/user";
 import { useUserStore } from "@/store";
 import { Profile } from "@/types/user";
 import { ref } from "vue";
 import { onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute,onBeforeRouteUpdate } from "vue-router";
 const userStore = useUserStore();
 const route = useRoute();
 const profile = ref<Profile>({
@@ -91,24 +95,30 @@ const profile = ref<Profile>({
   image: "",
   following: false,
 });
+let isCurrentUser = ref<boolean>(false);
 onMounted(() => {
   profile.value = route.meta.profile as Profile;
+  if (
+    !userStore.getIsLogined ||
+    userStore.getUser?.username !== profile.value.username
+  ) {
+    isCurrentUser.value = false;
+  } else {
+    isCurrentUser.value = true;
+  }
 });
 
-/*
-if use webHashHistoryMode, need to use onBeforeRouteUpdate when set other username in url
-*/
-// onBeforeRouteUpdate((to, _from, next) => {
-//   let userName = to.path.slice(2, to.path.length);
-//   getProfile(userName)
-//     .then((res) => {
-//       profile.value = res.profile;
-//       next();
-//     })
-//     .catch((_e) => {
-//       next({ path: "/" });
-//     });
-// });
+onBeforeRouteUpdate((to, _from, next) => {
+  let userName = to.path.slice(2, to.path.length);
+  getProfile(userName)
+    .then((res) => {
+      profile.value = res.profile;
+      next();
+    })
+    .catch((_e) => {
+      next({ path: "/" });
+    });
+});
 </script>
 
 <style></style>

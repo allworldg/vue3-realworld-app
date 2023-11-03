@@ -5,13 +5,13 @@
     :key="index"
   >
     <div class="article-meta">
-      <a :href="`@${article.author.username}`">
+      <RouterLink :to="`@${article.author.username}`">
         <img :src="article.author.image" />
-      </a>
+      </RouterLink>
       <div class="info">
-        <a :href="`@${article.author.username}`" class="author">
+        <RouterLink :to="`@${article.author.username}`" class="author">
           {{ article.author.username }}
-        </a>
+        </RouterLink>
         <span class="date">{{ article.createdAt }}</span>
       </div>
       <button class="btn btn-outline-primary btn-sm pull-xs-right">

@@ -17,9 +17,13 @@
               <i class="ion-gear-a"></i>
               &nbsp; Edit Profile Settings
             </button>
-            <button v-else class="btn btn-sm btn-outline-secondary action-btn">
+            <button
+              @click="handleFollow"
+              v-else
+              class="btn btn-sm btn-outline-secondary action-btn"
+            >
               <i class="ion-plus-round"></i>
-              &nbsp; Follow {{ profile!.username }}
+              &nbsp; {{ isFollowed }} {{ profile!.username }}
             </button>
           </div>
         </div>
@@ -32,41 +36,21 @@
           <div class="articles toggle">
             <ul class="nav nav-pills outline-active">
               <li class="nav-item">
-                <a class="nav-link active" href="">My Articles</a>
+                <RouterLink exact class="nav-link" active-class="active" to="/"
+                  >My Articles</RouterLink
+                >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="">Favorited Articles</a>
+                <RouterLink
+                  class="nav-link"
+                  active-class="active"
+                  to="favorites"
+                  >Favorited Articles</RouterLink
+                >
               </li>
             </ul>
           </div>
-          <div class="article-preview">
-            <div class="article-meta">
-              <a href="/profile/eric-simons"
-                ><img src="http://i.imgur.com/Qr71crq.jpg"
-              /></a>
-              <div class="info">
-                <a href="/profile/eric-simons" class="author">Eric Simons</a>
-                <span class="date">January 20th</span>
-              </div>
-              <button class="btn btn-outline-primary btn-sm pull-xs-right">
-                <i class="ion-heart"></i> 29
-              </button>
-            </div>
-            <a
-              href="/article/how-to-buil-webapps-that-scale"
-              class="preview-link"
-            >
-              <h1>How to build webapps that scale</h1>
-              <p>This is the description for the post.</p>
-              <span>Read more...</span>
-              <ul class="tag-list">
-                <li class="tag-default tag-pill tag-outline">realworld</li>
-                <li class="tag-default tag-pill tag-outline">
-                  implementations
-                </li>
-              </ul>
-            </a>
-          </div>
+          <RouterView></RouterView>
           <ul class="pagination">
             <li class="page-item active">
               <a class="page-link" href="">1</a>
@@ -82,11 +66,10 @@
 </template>
 
 <script setup lang="ts">
-import { getProfile } from "@/api/user";
+import { follow, getProfile, unfollow } from "@/api/user";
 import { useUserStore } from "@/store";
 import { Profile } from "@/types/user";
-import { ref } from "vue";
-import { onMounted } from "vue";
+import { onMounted, computed, ref } from "vue";
 import { useRoute, onBeforeRouteUpdate, useRouter } from "vue-router";
 const userStore = useUserStore();
 const route = useRoute();
@@ -98,8 +81,24 @@ const profile = ref<Profile>({
   following: false,
 });
 let isCurrentUser = ref<boolean>(false);
+let isFollowed = computed(() => {
+  return profile.value.following === false ? "Follow" : "Unfollow";
+});
 function handleUpdateProfile() {
   router.push({ path: "/settings" });
+}
+function handleFollow() {
+  if (userStore.getIsLogined === false) {
+    router.push({ path: "/login" });
+  } else if (profile.value.following === false) {
+    follow(profile.value.username).then((res) => {
+      profile.value = res.profile;
+    });
+  } else {
+    unfollow(profile.value.username).then((res) => {
+      profile.value = res.profile;
+    });
+  }
 }
 onMounted(() => {
   profile.value = route.meta.profile as Profile;

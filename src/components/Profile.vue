@@ -12,6 +12,7 @@
             <button
               v-if="isCurrentUser"
               class="btn btn-sm btn-outline-secondary action-btn"
+              @click="handleUpdateProfile"
             >
               <i class="ion-gear-a"></i>
               &nbsp; Edit Profile Settings
@@ -86,9 +87,10 @@ import { useUserStore } from "@/store";
 import { Profile } from "@/types/user";
 import { ref } from "vue";
 import { onMounted } from "vue";
-import { useRoute,onBeforeRouteUpdate } from "vue-router";
+import { useRoute, onBeforeRouteUpdate, useRouter } from "vue-router";
 const userStore = useUserStore();
 const route = useRoute();
+const router = useRouter();
 const profile = ref<Profile>({
   username: "",
   bio: "",
@@ -96,6 +98,9 @@ const profile = ref<Profile>({
   following: false,
 });
 let isCurrentUser = ref<boolean>(false);
+function handleUpdateProfile() {
+  router.push({ path: "/settings" });
+}
 onMounted(() => {
   profile.value = route.meta.profile as Profile;
   if (

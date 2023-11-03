@@ -58,7 +58,7 @@
               </fieldset>
               <button
                 class="btn btn-lg btn-primary pull-xs-right"
-                @click="handleUpdate"
+                @click.prevent="handleUpdate"
               >
                 Update Settings
               </button>

@@ -38,7 +38,6 @@ const routes: RouteRecordRaw[] = [
           next();
         })
         .catch((_e) => {
-          console.log("redirect");
           next({ path: "/" });
         });
     },

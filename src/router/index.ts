@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import("@/components/Settings.vue"),
   },
   {
-    path: "/@:username(\\w+)",
+    path: "/@:username([^/]+)",
     component: () => import("@/components/Profile.vue"),
     beforeEnter: (to, _from, next) => {
       let userName = to.path.slice(2, to.path.length);
@@ -38,8 +38,12 @@ const routes: RouteRecordRaw[] = [
           next();
         })
         .catch((_e) => {
+          console.log("redirect");
           next({ path: "/" });
         });
+    },
+    meta: {
+      requiresAuth: false,
     },
   },
   {
@@ -49,7 +53,7 @@ const routes: RouteRecordRaw[] = [
     children: [],
   },
 ];
-const whiteList = ["/", "/login", "/register", "/article/*"];
+const whiteList = ["/", "/login", "/register"];
 
 const router = createRouter({
   history: createWebHistory(),
@@ -77,7 +81,10 @@ router.beforeEach(async (to, _from, next) => {
       }
     }
   } else {
-    if (whiteList.indexOf(to.path) !== -1) {
+    if (
+      whiteList.indexOf(to.path) !== -1 ||
+      (to.meta.requiresAuth !== undefined && to.meta.requiresAuth === false)
+    ) {
       next();
     } else {
       next({ path: `/login?redirect=${to.path}` });

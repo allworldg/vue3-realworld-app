@@ -94,10 +94,7 @@ onMounted(() => {
     loading_articles.value = false;
     isShowPage.value = true;
     articles.value = res.articles;
-    pages.value = Math.floor(res.articlesCount / 10);
-    if (res.articlesCount % 10 != 0) {
-      pages.value++;
-    }
+    pages.value = Math.ceil(res.articlesCount / range);
   });
   getTags().then((res) => {
     tags.value = res.tags;

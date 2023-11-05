@@ -29,6 +29,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/@:username([^/]+)",
+    name: "profile",
     component: () => import("@/components/Profile.vue"),
     beforeEnter: (to, _from, next) => {
       let userName = to.path.slice(2, to.path.length);
@@ -44,6 +45,18 @@ const routes: RouteRecordRaw[] = [
     meta: {
       requiresAuth: false,
     },
+    children: [
+      {
+        path: "",
+        name: "",
+        component: () => import("@/components/ProfileArticles.vue"),
+      },
+      {
+        path: "favorites",
+        name: "favorites",
+        component: () => import("@/components/ProfileArticles.vue"),
+      },
+    ],
   },
   {
     path: "/:pathMatch(.*)*",

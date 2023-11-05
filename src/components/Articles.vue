@@ -1,4 +1,7 @@
 <template>
+  <div v-if="articles?.length === 0">
+    {{ NO_ARTICLES_TEXT }}
+  </div>
   <div
     class="article-preview"
     v-for="(article, index) in articles"
@@ -36,8 +39,8 @@
 </template>
 
 <script setup lang="ts">
+import { NO_ARTICLES_TEXT } from "@/common/global";
 import { Article } from "@/types/articles";
-
 //@ts-ignore
 const props = defineProps({
   articles: Array<Article>,

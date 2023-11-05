@@ -3,7 +3,7 @@ import { User } from "./user";
 export interface ArticlesParams {
   tag?: string;
   author?: string;
-  favorite?: string;
+  favorited?: string;
   limit?: number;
   offset?: number;
 }

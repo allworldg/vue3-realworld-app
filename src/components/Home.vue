@@ -80,10 +80,7 @@ function changePage(page: number) {
   getArticles(params.value).then((res) => {
     loading_articles.value = false;
     articles.value = res.articles;
-    pages.value = Math.floor(res.articlesCount / 10);
-    if (res.articlesCount % 10 != 0) {
-      pages.value++;
-    }
+    pages.value = Math.ceil(res.articlesCount / range);
   });
 }
 

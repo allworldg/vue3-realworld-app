@@ -25,7 +25,7 @@
           <li class="nav-item">
             <RouterLink
               class="nav-link"
-              :to="`@${userStore.getUser!.username}`"
+              :to="`/@${userStore.getUser!.username}`"
             >
               <img :src="userStore.getUser?.image" class="user-pic" />
               {{ userStore.getUser?.username }}

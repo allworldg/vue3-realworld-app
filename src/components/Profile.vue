@@ -92,6 +92,7 @@ function handleFollow() {
     });
   }
 }
+
 onMounted(() => {
   profile.value = route.meta.profile as Profile;
   if (
@@ -104,15 +105,14 @@ onMounted(() => {
   }
 });
 
-onBeforeRouteUpdate((to, _from, next) => {
+onBeforeRouteUpdate((to, _from) => {
   let userName = to.path.slice(2, to.path.length);
   getProfile(userName)
     .then((res) => {
       profile.value = res.profile;
-      next();
     })
     .catch((_e) => {
-      next({ path: "/" });
+      router.push({ path: "/" });
     });
 });
 </script>

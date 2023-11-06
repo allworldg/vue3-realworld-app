@@ -48,7 +48,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: "",
-        name: "",
+        name: "profileArticle",
         component: () => import("@/components/ProfileArticles.vue"),
       },
       {

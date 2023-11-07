@@ -1,16 +1,20 @@
 import requests from "@/utils/requests";
-import {
-  ArticlesParams,
-  ResponseArticles,
-  ResponseTags,
-} from "@/types/articles";
-import { GET_TAGS, REQUEST_ARTICLES } from "@/common/url";
+import { ArticlesParams, ResponseArticles, ResponseTags } from "@/types/articles";
+import { TAGS, ARTICLES, FEED } from "@/common/url";
 
 export function getArticles(params: ArticlesParams): Promise<ResponseArticles> {
   return requests({
     method: "get",
-    url: REQUEST_ARTICLES,
+    url: ARTICLES,
     data: {},
+    params,
+  });
+}
+
+export function getFeedArticles(params: ArticlesParams): Promise<ResponseArticles> {
+  return requests({
+    method: "get",
+    url: FEED,
     params,
   });
 }
@@ -18,6 +22,6 @@ export function getArticles(params: ArticlesParams): Promise<ResponseArticles> {
 export function getTags(): Promise<ResponseTags> {
   return requests({
     method: "get",
-    url: GET_TAGS,
+    url: TAGS,
   });
 }

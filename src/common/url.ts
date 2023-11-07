@@ -5,5 +5,6 @@ export const UPDATEUSER = "user";
 export const PROFILES = "profiles";
 export const FOLLOW = "follow";
 
-export const REQUEST_ARTICLES = "articles";
-export const GET_TAGS = "tags";
+export const ARTICLES = "articles";
+export const TAGS = "tags";
+export const FEED = "feed"

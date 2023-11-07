@@ -19,6 +19,14 @@ export function getFeedArticles(params: ArticlesParams): Promise<ResponseArticle
   });
 }
 
+export function getTagArticles(params: ArticlesParams): Promise<ResponseArticles> {
+  return requests({
+    method: "get",
+    url: ARTICLES,
+    params,
+  });
+}
+
 export function getTags(): Promise<ResponseTags> {
   return requests({
     method: "get",

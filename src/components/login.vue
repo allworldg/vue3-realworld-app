@@ -54,7 +54,6 @@ let email = ref<string>("");
 let password = ref<string>("");
 const userStore = useUserStore();
 function handleLogin() {
-  console.log("click handleLogin");
   login({
     email: email.value,
     password: password.value,

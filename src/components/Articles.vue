@@ -8,17 +8,18 @@
     :key="index"
   >
     <div class="article-meta">
-      <RouterLink :to="`@${article.author.username}`">
+      <RouterLink :to="`/@${article.author.username}`">
         <img :src="article.author.image" />
       </RouterLink>
       <div class="info">
-        <RouterLink :to="`@${article.author.username}`" class="author">
+        <RouterLink :to="`/@${article.author.username}`" class="author">
           {{ article.author.username }}
         </RouterLink>
         <span class="date">{{ article.createdAt }}</span>
       </div>
       <button class="btn btn-outline-primary btn-sm pull-xs-right">
-        <i class="ion-heart"></i> {{ article.favoritesCount }}
+        <i class="ion-heart"></i>
+        {{ article.favoritesCount }}
       </button>
     </div>
     <a :href="`article/${article.slug}`" class="preview-link">

@@ -36,21 +36,26 @@
           <div class="articles toggle">
             <ul class="nav nav-pills outline-active">
               <li class="nav-item">
-                <RouterLink exact class="nav-link" active-class="active" to="/"
-                  >My Articles</RouterLink
+                <RouterLink
+                  exact-active-class="active"
+                  class="nav-link"
+                  :to="{ name: 'profileArticle' }"
                 >
+                  My Articles
+                </RouterLink>
               </li>
               <li class="nav-item">
                 <RouterLink
                   class="nav-link"
                   active-class="active"
-                  to="favorites"
-                  >Favorited Articles</RouterLink
+                  :to="{ name: 'favorites' }"
                 >
+                  Favorited Articles
+                </RouterLink>
               </li>
             </ul>
           </div>
-          <RouterView></RouterView>
+          <RouterView :key="(route.path as string)"></RouterView>
         </div>
       </div>
     </div>
@@ -61,8 +66,9 @@
 import { follow, getProfile, unfollow } from "@/api/user";
 import { useUserStore } from "@/store";
 import { Profile } from "@/types/user";
+import { watch } from "vue";
 import { onMounted, computed, ref } from "vue";
-import { useRoute, onBeforeRouteUpdate, useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 const userStore = useUserStore();
 const route = useRoute();
 const router = useRouter();
@@ -105,16 +111,26 @@ onMounted(() => {
   }
 });
 
-onBeforeRouteUpdate((to, _from) => {
-  let userName = to.path.slice(2, to.path.length);
-  getProfile(userName)
-    .then((res) => {
-      profile.value = res.profile;
-    })
-    .catch((_e) => {
-      router.push({ path: "/" });
-    });
-});
+watch(
+  () => route.params.username,
+  (newUserName) => {
+    getProfile(newUserName as string)
+      .then((res) => {
+        profile.value = res.profile;
+        if (
+          !userStore.getIsLogined ||
+          userStore.getUser?.username !== profile.value.username
+        ) {
+          isCurrentUser.value = false;
+        } else {
+          isCurrentUser.value = true;
+        }
+      })
+      .catch((_e) => {
+        router.push({ path: "/" });
+      });
+  }
+);
 </script>
 
 <style></style>

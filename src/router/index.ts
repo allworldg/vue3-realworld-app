@@ -32,7 +32,7 @@ const routes: RouteRecordRaw[] = [
     name: "profile",
     component: () => import("@/components/Profile.vue"),
     beforeEnter: (to, _from, next) => {
-      let userName = to.path.slice(2, to.path.length);
+      let userName = to.params.username as string;
       getProfile(userName)
         .then((res) => {
           to.meta.profile = res.profile;

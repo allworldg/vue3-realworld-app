@@ -132,10 +132,13 @@ function changePage(page: number) {
   }
 }
 
+
+
+
 function handleGetGlobalArticles() {
   curPage.value = 1;
   curTag.value = "";
-  params.value.tag=undefined
+  params.value.tag = undefined;
   curArticleTypes.value = GLOBAL;
   isShowPage.value = false;
   params.value.offset = curPage.value - 1;
@@ -153,7 +156,7 @@ function handleGetFeedArticles() {
   curTag.value = "";
   curArticleTypes.value = FEED;
   params.value.offset = curPage.value - 1;
-  params.value.tag=undefined
+  params.value.tag = undefined;
   loading_articles.value = true;
   isShowPage.value = false;
   getFeedArticles(params.value).then((res) => {
@@ -181,7 +184,11 @@ function handleGetTagArticles(tag: string) {
 }
 
 onMounted(() => {
-  handleGetFeedArticles();
+  if (userStore.getIsLogined === true) {
+    handleGetFeedArticles();
+  } else {
+    handleGetGlobalArticles();
+  }
   getTags().then((res) => {
     tags.value = res.tags;
     loading_tags.value = false;

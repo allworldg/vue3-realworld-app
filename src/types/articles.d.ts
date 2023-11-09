@@ -29,3 +29,7 @@ export interface ResponseArticles {
   articles: Array<Article>;
   articlesCount:number;
 }
+
+export interface ResponseArticle{
+  article:Article
+}

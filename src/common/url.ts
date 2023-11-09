@@ -7,3 +7,5 @@ export const FOLLOW = "follow";
 export const ARTICLES = "articles";
 export const TAGS = "tags";
 export const FEED = `articles/feed`
+
+export const FAVORITE="favorite"

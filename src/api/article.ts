@@ -1,6 +1,6 @@
 import requests from "@/utils/requests";
-import { ArticlesParams, ResponseArticles, ResponseTags } from "@/types/articles";
-import { TAGS, ARTICLES, FEED } from "@/common/url";
+import { ArticlesParams, ResponseArticle, ResponseArticles, ResponseTags } from "@/types/articles";
+import { TAGS, ARTICLES, FEED, FAVORITE } from "@/common/url";
 
 export function getArticles(params: ArticlesParams): Promise<ResponseArticles> {
   return requests({
@@ -24,6 +24,20 @@ export function getTagArticles(params: ArticlesParams): Promise<ResponseArticles
     method: "get",
     url: ARTICLES,
     params,
+  });
+}
+
+export function addFavoriteArticle(slug: string): Promise<ResponseArticle> {
+  return requests({
+    method: "post",
+    url: `${ARTICLES}/${slug}/${FAVORITE}`,
+  });
+}
+
+export function unFavoriteArticle(slug: string): Promise<ResponseArticle> {
+  return requests({
+    method: "delete",
+    url: `${ARTICLES}/${slug}/${FAVORITE}`,
   });
 }
 

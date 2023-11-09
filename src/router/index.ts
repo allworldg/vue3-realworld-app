@@ -20,6 +20,12 @@ const routes: RouteRecordRaw[] = [
     children: [],
   },
   {
+    path: "/article/:slug",
+    component: () => import("@/components/Article.vue"),
+    props: true,
+  },
+
+  {
     path: "/editor",
     component: () => import("@/components/Editor.vue"),
   },

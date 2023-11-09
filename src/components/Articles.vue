@@ -23,7 +23,7 @@
         {{ article.favoritesCount }}
       </button>
     </div>
-    <a :href="`article/${article.slug}`" class="preview-link">
+    <a :href="`/article/${article.slug}`" class="preview-link">
       <h1>{{ article.title }}</h1>
       <p>{{ article.description }}</p>
       <span>Read more...</span>

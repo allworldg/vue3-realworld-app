@@ -61,6 +61,7 @@ function handleLogin() {
     userStore.setAuth(res.user);
     router.push({
       path: (route.query?.redirect as string) || "/",
+      replace:true
     });
   });
 }

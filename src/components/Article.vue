@@ -2,33 +2,41 @@
   <div class="article-page">
     <div class="banner">
       <div class="container">
-        <h1>How to build webapps that scale</h1>
+        <h1>{{ article.title }}</h1>
 
         <div class="article-meta">
-          <a href="/profile/eric-simons"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
+          <RouterLink :to="`/@${author.username}`">
+            <img :src="author.image" />
+          </RouterLink>
           <div class="info">
-            <a href="/profile/eric-simons" class="author">Eric Simons</a>
+            <RouterLink :to="`/@${author.username}`" class="author">
+              {{ author.username }}
+            </RouterLink>
             <span class="date">January 20th</span>
           </div>
-          <button class="btn btn-sm btn-outline-secondary">
+          <button class="btn btn-sm btn-outline-secondary" :class="{ 'btn-secondary': author }">
             <i class="ion-plus-round"></i>
-            &nbsp; Follow Eric Simons
-            <span class="counter">(10)</span>
+            &nbsp; Follow {{ author.username }}
           </button>
           &nbsp;&nbsp;
-          <button class="btn btn-sm btn-outline-primary">
+          <button
+            class="btn btn-sm"
+            :class="{ 'btn-primary': article.favorited, 'btn-outline-primary': !article.favorited }"
+          >
             <i class="ion-heart"></i>
             &nbsp; Favorite Post
-            <span class="counter">(29)</span>
+            <span class="counter">({{ article.favoritesCount }})</span>
           </button>
-          <button class="btn btn-sm btn-outline-secondary">
-            <i class="ion-edit"></i>
-            Edit Article
-          </button>
-          <button class="btn btn-sm btn-outline-danger">
-            <i class="ion-trash-a"></i>
-            Delete Article
-          </button>
+          <div v-if="isCurrentUser">
+            <button class="btn btn-sm btn-outline-secondary">
+              <i class="ion-edit"></i>
+              Edit Article
+            </button>
+            <button class="btn btn-sm btn-outline-danger">
+              <i class="ion-trash-a"></i>
+              Delete Article
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -37,7 +45,8 @@
       <div class="row article-content">
         <div class="col-md-12">
           <p>
-            Web development technologies have evolved at an incredible clip over the past few years.
+            {{ article.title }}
+            <!-- Web development technologies have evolved at an incredible clip over the past few years. -->
           </p>
           <h2 id="introducing-ionic">Introducing RealWorld.</h2>
           <p>It's a great solution for learning how other frameworks work.</p>
@@ -132,8 +141,24 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
+import { getArticle } from "@/api/article";
+import { useUserStore } from "@/store";
+import { Article } from "@/types/articles";
+import { Profile } from "@/types/user";
+import { computed } from "vue";
+import { ref } from "vue";
 const props = defineProps<{ slug: string }>();
+const slug = props.slug;
+let article = ref<Article>({} as Article);
+let author = ref<Profile>({} as Profile);
+const userStore = useUserStore();
+let isCurrentUser = computed(() => {
+  return userStore.getIsLogined && userStore.getUser?.username === author.value.username;
+});
+getArticle(slug).then((res) => {
+  article.value = res.article;
+  author.value = article.value.author;
+});
 </script>
 
 <style></style>

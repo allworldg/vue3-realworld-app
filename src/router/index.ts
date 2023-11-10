@@ -23,6 +23,9 @@ const routes: RouteRecordRaw[] = [
     path: "/article/:slug",
     component: () => import("@/components/Article.vue"),
     props: true,
+    meta: {
+      requiresAuth: false,
+    },
   },
 
   {

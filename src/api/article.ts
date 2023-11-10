@@ -2,6 +2,13 @@ import requests from "@/utils/requests";
 import { ArticlesParams, ResponseArticle, ResponseArticles, ResponseTags } from "@/types/articles";
 import { TAGS, ARTICLES, FEED, FAVORITE } from "@/common/url";
 
+export function getArticle(slug: string): Promise<ResponseArticle> {
+  return requests({
+    method:"get",
+    url:`${ARTICLES}/${slug}`
+  })
+}
+
 export function getArticles(params: ArticlesParams): Promise<ResponseArticles> {
   return requests({
     method: "get",

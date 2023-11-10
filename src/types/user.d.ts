@@ -12,8 +12,6 @@ export interface User {
   password: string;
 }
 
-
-
 export interface UpdateUser {
   user: User;
 }
@@ -28,6 +26,6 @@ export interface Profile {
   image: string;
   username: string;
 }
-export interface ProfileResponse{
-  profile:Profile
+export interface ProfileResponse {
+  profile: Profile;
 }

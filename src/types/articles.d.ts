@@ -9,14 +9,14 @@ export interface ArticlesParams {
 }
 
 export interface Article {
-  author: User;
+  author: Profile;
   body: string;
   createdAt: string;
   description: string;
   favorited: boolean;
   favoritesCount: number;
   slug: string;
-  tagList: Array;
+  tagList: Array<string>;
   title: string;
   updatedAt: string;
 }
@@ -26,10 +26,13 @@ export interface ResponseTags {
 }
 
 export interface ResponseArticles {
+  article: Article;
+}
+export interface ResponseArticles {
   articles: Array<Article>;
-  articlesCount:number;
+  articlesCount: number;
 }
 
-export interface ResponseArticle{
-  article:Article
+export interface ResponseArticle {
+  article: Article;
 }

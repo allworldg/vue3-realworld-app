@@ -14,10 +14,16 @@
             </RouterLink>
             <span class="date">{{ article.createdAt }}</span>
           </div>
-          <div v-if="!isCurrentUser">
-            <button class="btn btn-sm btn-outline-secondary" :class="{ 'btn-secondary': author }">
+          <span v-if="!isCurrentUser">
+            <button
+              class="btn btn-sm"
+              :class="{
+                'btn-secondary': author.following,
+                'btn-outline-secondary': !author.following,
+              }"
+              @click="handleFollow">
               <i class="ion-plus-round"></i>
-              &nbsp; Follow {{ author.username }}
+              &nbsp; {{ `${isFollowingText} ${author.username}` }}
             </button>
             &nbsp;&nbsp;
             <button
@@ -26,13 +32,13 @@
                 'btn-primary': article.favorited,
                 'btn-outline-primary': !article.favorited,
               }"
-            >
+              @click="handleFavorite">
               <i class="ion-heart"></i>
-              &nbsp; Favorite article
+              &nbsp; {{ isFavoritedArticle }} article
               <span class="counter">({{ article.favoritesCount }})</span>
             </button>
-          </div>
-          <div v-else>
+          </span>
+          <span v-else>
             <button class="btn btn-sm btn-outline-secondary">
               <i class="ion-edit"></i>
               Edit Article
@@ -41,7 +47,7 @@
               <i class="ion-trash-a"></i>
               Delete Article
             </button>
-          </div>
+          </span>
         </div>
       </div>
     </div>
@@ -51,8 +57,12 @@
         <div class="col-md-12">
           <div v-html="article.body"></div>
           <ul class="tag-list">
-            <li class="tag-default tag-pill tag-outline">realworld</li>
-            <li class="tag-default tag-pill tag-outline">implementations</li>
+            <li
+              v-for="(tag, index) in article.tagList"
+              :key="index"
+              class="tag-default tag-pill tag-outline">
+              {{ tag }}
+            </li>
           </ul>
         </div>
       </div>
@@ -61,30 +71,45 @@
 
       <div class="article-actions">
         <div class="article-meta">
-          <a href="profile.html"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
+          <a href="profile.html"><img :src="author.image" /></a>
           <div class="info">
-            <a href="" class="author">Eric Simons</a>
-            <span class="date">January 20th</span>
+            <a href="" class="author">{{ author.username }}</a>
+            <span class="date">{{ article.createdAt }}</span>
           </div>
-
-          <button class="btn btn-sm btn-outline-secondary">
-            <i class="ion-plus-round"></i>
-            &nbsp; Follow Eric Simons
-          </button>
-          &nbsp;
-          <button class="btn btn-sm btn-outline-primary">
-            <i class="ion-heart"></i>
-            &nbsp; Favorite Article
-            <span class="counter">(29)</span>
-          </button>
-          <button class="btn btn-sm btn-outline-secondary">
-            <i class="ion-edit"></i>
-            Edit Article
-          </button>
-          <button class="btn btn-sm btn-outline-danger">
-            <i class="ion-trash-a"></i>
-            Delete Article
-          </button>
+          <span v-if="!isCurrentUser">
+            <button
+              class="btn btn-sm"
+              :class="{
+                'btn-secondary': author.following,
+                'btn-outline-secondary': !author.following,
+              }"
+              @click="handleFollow">
+              <i class="ion-plus-round"></i>
+              &nbsp; {{ `${isFollowingText} ${author.username}` }}
+            </button>
+            &nbsp;
+            <button
+              class="btn btn-sm"
+              :class="{
+                'btn-primary': article.favorited,
+                'btn-outline-primary': !article.favorited,
+              }"
+              @click="handleFavorite">
+              <i class="ion-heart"></i>
+              &nbsp; {{ isFavoritedArticle }} Article
+              <span class="counter">({{ article.favoritesCount }})</span>
+            </button>
+          </span>
+          <span v-else>
+            <button class="btn btn-sm btn-outline-secondary">
+              <i class="ion-edit"></i>
+              Edit Article
+            </button>
+            <button class="btn btn-sm btn-outline-danger">
+              <i class="ion-trash-a"></i>
+              Delete Article
+            </button>
+          </span>
         </div>
       </div>
 
@@ -141,20 +166,31 @@
 </template>
 
 <script setup lang="ts">
-import { getArticle } from "@/api/article";
+import { addFavoriteArticle, getArticle, unFavoriteArticle } from "@/api/article";
+import { follow, unfollow } from "@/api/user";
 import { useUserStore } from "@/store";
 import { Article } from "@/types/articles";
 import { Profile } from "@/types/user";
 import { computed } from "vue";
 import { ref } from "vue";
 import { marked } from "marked";
+import { useRouter } from "vue-router";
+import { FAVORITE_TEXT, FOLLOW_TEXT, UNFAVORITE_TEXT, UNFOLLOW_TEXT } from "@/common/global";
 const props = defineProps<{ slug: string }>();
 const slug = props.slug;
 let article = ref<Article>({} as Article);
 let author = ref<Profile>({} as Profile);
 const userStore = useUserStore();
+const router = useRouter();
 let isCurrentUser = computed(() => {
   return userStore.getIsLogined && userStore.getUser?.username === author.value.username;
+});
+let isFollowingText = computed(() => {
+  return author.value.following === true ? UNFOLLOW_TEXT : FOLLOW_TEXT;
+});
+
+let isFavoritedArticle = computed(() => {
+  return article.value.favorited === true ? UNFAVORITE_TEXT : FAVORITE_TEXT;
 });
 getArticle(slug).then((res) => {
   article.value = res.article;
@@ -165,6 +201,38 @@ getArticle(slug).then((res) => {
 function parseMarkdown(text: string) {
   return marked.parse(text);
 }
+
+function handleFollow() {
+  if (userStore.isLogined === false) {
+    router.push({ path: "/login" });
+  }
+  if (author.value.following !== true) {
+    follow(author.value.username).then((res) => {
+      author.value = { ...res.profile };
+    });
+  } else {
+    unfollow(author.value.username).then((res) => {
+      author.value = { ...res.profile };
+    });
+  }
+}
+
+function handleFavorite() {
+  if (userStore.isLogined === false) {
+    router.push({ path: "/login" });
+  }
+  if (article.value.favorited !== true) {
+    addFavoriteArticle(article.value.slug).then((res) => {
+      article.value = { ...res.article };
+    });
+  } else {
+    unFavoriteArticle(article.value.slug).then((res) => {
+      article.value = { ...res.article };
+    });
+  }
+}
+
+
 </script>
 
 <style></style>

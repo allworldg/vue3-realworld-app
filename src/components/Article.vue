@@ -12,22 +12,27 @@
             <RouterLink :to="`/@${author.username}`" class="author">
               {{ author.username }}
             </RouterLink>
-            <span class="date">January 20th</span>
+            <span class="date">{{ article.createdAt }}</span>
           </div>
-          <button class="btn btn-sm btn-outline-secondary" :class="{ 'btn-secondary': author }">
-            <i class="ion-plus-round"></i>
-            &nbsp; Follow {{ author.username }}
-          </button>
-          &nbsp;&nbsp;
-          <button
-            class="btn btn-sm"
-            :class="{ 'btn-primary': article.favorited, 'btn-outline-primary': !article.favorited }"
-          >
-            <i class="ion-heart"></i>
-            &nbsp; Favorite Post
-            <span class="counter">({{ article.favoritesCount }})</span>
-          </button>
-          <div v-if="isCurrentUser">
+          <div v-if="!isCurrentUser">
+            <button class="btn btn-sm btn-outline-secondary" :class="{ 'btn-secondary': author }">
+              <i class="ion-plus-round"></i>
+              &nbsp; Follow {{ author.username }}
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm"
+              :class="{
+                'btn-primary': article.favorited,
+                'btn-outline-primary': !article.favorited,
+              }"
+            >
+              <i class="ion-heart"></i>
+              &nbsp; Favorite article
+              <span class="counter">({{ article.favoritesCount }})</span>
+            </button>
+          </div>
+          <div v-else>
             <button class="btn btn-sm btn-outline-secondary">
               <i class="ion-edit"></i>
               Edit Article
@@ -44,12 +49,7 @@
     <div class="container page">
       <div class="row article-content">
         <div class="col-md-12">
-          <p>
-            {{ article.title }}
-            <!-- Web development technologies have evolved at an incredible clip over the past few years. -->
-          </p>
-          <h2 id="introducing-ionic">Introducing RealWorld.</h2>
-          <p>It's a great solution for learning how other frameworks work.</p>
+          <div v-html="article.body"></div>
           <ul class="tag-list">
             <li class="tag-default tag-pill tag-outline">realworld</li>
             <li class="tag-default tag-pill tag-outline">implementations</li>
@@ -147,6 +147,7 @@ import { Article } from "@/types/articles";
 import { Profile } from "@/types/user";
 import { computed } from "vue";
 import { ref } from "vue";
+import { marked } from "marked";
 const props = defineProps<{ slug: string }>();
 const slug = props.slug;
 let article = ref<Article>({} as Article);
@@ -158,7 +159,12 @@ let isCurrentUser = computed(() => {
 getArticle(slug).then((res) => {
   article.value = res.article;
   author.value = article.value.author;
+  article.value.body = parseMarkdown(article.value.body);
 });
+
+function parseMarkdown(text: string) {
+  return marked.parse(text);
+}
 </script>
 
 <style></style>

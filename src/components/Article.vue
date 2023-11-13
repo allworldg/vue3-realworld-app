@@ -39,11 +39,11 @@
             </button>
           </span>
           <span v-else>
-            <button class="btn btn-sm btn-outline-secondary">
+            <button class="btn btn-sm btn-outline-secondary" @click="handleEditArticle">
               <i class="ion-edit"></i>
               Edit Article
             </button>
-            <button class="btn btn-sm btn-outline-danger">
+            <button class="btn btn-sm btn-outline-danger" @click="handleDeleteArticle">
               <i class="ion-trash-a"></i>
               Delete Article
             </button>
@@ -101,11 +101,11 @@
             </button>
           </span>
           <span v-else>
-            <button class="btn btn-sm btn-outline-secondary">
+            <button class="btn btn-sm btn-outline-secondary" @click="handleEditArticle">
               <i class="ion-edit"></i>
               Edit Article
             </button>
-            <button class="btn btn-sm btn-outline-danger">
+            <button class="btn btn-sm btn-outline-danger" @click="handleDeleteArticle">
               <i class="ion-trash-a"></i>
               Delete Article
             </button>
@@ -166,7 +166,7 @@
 </template>
 
 <script setup lang="ts">
-import { addFavoriteArticle, getArticle, unFavoriteArticle } from "@/api/article";
+import { addFavoriteArticle, deleteArticle, getArticle, unFavoriteArticle } from "@/api/article";
 import { follow, unfollow } from "@/api/user";
 import { useUserStore } from "@/store";
 import { Article } from "@/types/articles";
@@ -232,7 +232,15 @@ function handleFavorite() {
   }
 }
 
+function handleEditArticle() {
+  router.push({ name: "editor", params: { slug: article.value.slug } });
+}
 
+function handleDeleteArticle() {
+  deleteArticle(article.value.slug).then(() => {
+    router.push({ path: "/" });
+  });
+}
 </script>
 
 <style></style>

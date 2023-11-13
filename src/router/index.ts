@@ -29,8 +29,10 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
-    path: "/editor",
+    name: "editor",
+    path: "/editor/:slug?",
     component: () => import("@/components/Editor.vue"),
+    props: true,
   },
   {
     path: "/settings",

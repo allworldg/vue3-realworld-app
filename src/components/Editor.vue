@@ -1,11 +1,7 @@
-<template>
-       this is editor 
-</template>
-    
-<script setup lang='ts'>
-    
+<template>{{ props.slug }}</template>
+
+<script setup lang="ts">
+const props = defineProps<{ slug?: string }>();
 </script>
-    
-<style>
-    
-</style>
+
+<style></style>

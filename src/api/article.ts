@@ -1,12 +1,13 @@
 import requests from "@/utils/requests";
 import { ArticlesParams, ResponseArticle, ResponseArticles, ResponseTags } from "@/types/articles";
 import { TAGS, ARTICLES, FEED, FAVORITE } from "@/common/url";
+import { request } from "http";
 
 export function getArticle(slug: string): Promise<ResponseArticle> {
   return requests({
-    method:"get",
-    url:`${ARTICLES}/${slug}`
-  })
+    method: "get",
+    url: `${ARTICLES}/${slug}`,
+  });
 }
 
 export function getArticles(params: ArticlesParams): Promise<ResponseArticles> {
@@ -52,5 +53,12 @@ export function getTags(): Promise<ResponseTags> {
   return requests({
     method: "get",
     url: TAGS,
+  });
+}
+
+export function deleteArticle(slug: string): Promise<any> {
+  return requests({
+    method: "delete",
+    url: `${ARTICLES}/${slug}`,
   });
 }

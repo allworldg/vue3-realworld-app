@@ -1,6 +1,7 @@
 import requests from "@/utils/requests";
 import {
   ArticlesParams,
+  UpdateArticle,
   RequestComment,
   ResponseArticle,
   ResponseArticles,
@@ -23,6 +24,26 @@ export function getArticles(params: ArticlesParams): Promise<ResponseArticles> {
     url: ARTICLES,
     data: {},
     params,
+  });
+}
+
+export function addArticle(article: UpdateArticle): Promise<ResponseArticle> {
+  return requests({
+    method: "post",
+    url: `${ARTICLES}`,
+    data: {
+      article,
+    },
+  });
+}
+
+export function updateArticle(article: UpdateArticle, slug: string): Promise<void> {
+  return requests({
+    method: "put",
+    url: `${ARTICLES}/${slug}`,
+    data: {
+      article,
+    },
   });
 }
 

@@ -55,3 +55,17 @@ export interface ResponseComment {
 export interface RequestComment {
   body: string;
 }
+
+export interface CreateArticle {
+  title: string;
+  description: string;
+  body: string;
+  tagList?: Array<string>;
+}
+
+export interface UpdateArticle {
+  title?: string;
+  description?: string;
+  body?: string;
+  tagList?: Array<string>;
+}

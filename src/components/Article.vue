@@ -71,7 +71,7 @@
 
       <div class="article-actions">
         <div class="article-meta">
-          <a href="profile.html"><img :src="author.image" /></a>
+          <RouterLink :to="`/@${author.username}`"><img :src="author.image" /></RouterLink>
           <div class="info">
             <a href="" class="author">{{ author.username }}</a>
             <span class="date">{{ article.createdAt }}</span>

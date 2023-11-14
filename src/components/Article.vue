@@ -114,72 +114,35 @@
       </div>
 
       <div class="row">
-        <div class="col-xs-12 col-md-8 offset-md-2">
-          <form class="card comment-form">
-            <div class="card-block">
-              <textarea class="form-control" placeholder="Write a comment..." rows="3"></textarea>
-            </div>
-            <div class="card-footer">
-              <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
-              <button class="btn btn-sm btn-primary">Post Comment</button>
-            </div>
-          </form>
-
-          <div class="card">
-            <div class="card-block">
-              <p class="card-text">
-                With supporting text below as a natural lead-in to additional content.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a href="/profile/author" class="comment-author">
-                <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
-              </a>
-              &nbsp;
-              <a href="/profile/jacob-schmidt" class="comment-author">Jacob Schmidt</a>
-              <span class="date-posted">Dec 29th</span>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-block">
-              <p class="card-text">
-                With supporting text below as a natural lead-in to additional content.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a href="/profile/author" class="comment-author">
-                <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
-              </a>
-              &nbsp;
-              <a href="/profile/jacob-schmidt" class="comment-author">Jacob Schmidt</a>
-              <span class="date-posted">Dec 29th</span>
-              <span class="mod-options">
-                <i class="ion-trash-a"></i>
-              </span>
-            </div>
-          </div>
-        </div>
+        <Comment :comments="comments" :slug="slug" @delete-comment="handleDeleteComment"></Comment>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { addFavoriteArticle, deleteArticle, getArticle, unFavoriteArticle } from "@/api/article";
+import {
+  addFavoriteArticle,
+  deleteArticle,
+  getArticle,
+  getComments,
+  unFavoriteArticle,
+} from "@/api/article";
 import { follow, unfollow } from "@/api/user";
 import { useUserStore } from "@/store";
-import { Article } from "@/types/articles";
+import { Article, Comment as CommentType } from "@/types/articles";
 import { Profile } from "@/types/user";
 import { computed } from "vue";
 import { ref } from "vue";
-import { marked } from "marked";
 import { useRouter } from "vue-router";
 import { FAVORITE_TEXT, FOLLOW_TEXT, UNFAVORITE_TEXT, UNFOLLOW_TEXT } from "@/common/global";
+import Comment from "@/components/Comment.vue";
+import { parseMarkdown } from "@/utils";
 const props = defineProps<{ slug: string }>();
 const slug = props.slug;
 let article = ref<Article>({} as Article);
 let author = ref<Profile>({} as Profile);
+let comments = ref<Array<CommentType>>([]);
 const userStore = useUserStore();
 const router = useRouter();
 let isCurrentUser = computed(() => {
@@ -197,10 +160,9 @@ getArticle(slug).then((res) => {
   author.value = article.value.author;
   article.value.body = parseMarkdown(article.value.body);
 });
-
-function parseMarkdown(text: string) {
-  return marked.parse(text);
-}
+getComments(slug).then((res) => {
+  comments.value = res.comments;
+});
 
 function handleFollow() {
   if (userStore.isLogined === false) {
@@ -239,6 +201,12 @@ function handleEditArticle() {
 function handleDeleteArticle() {
   deleteArticle(article.value.slug).then(() => {
     router.push({ path: "/" });
+  });
+}
+
+function handleDeleteComment(id: number) {
+  comments.value = comments.value.filter((e) => {
+    return id !== e.id;
   });
 }
 </script>

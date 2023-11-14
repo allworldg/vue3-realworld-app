@@ -1,4 +1,4 @@
-import { User } from "./user";
+import { Profile, User } from "./user";
 
 export interface ArticlesParams {
   tag?: string;
@@ -21,6 +21,14 @@ export interface Article {
   updatedAt: string;
 }
 
+export interface Comment {
+  id: number;
+  createdAt: string;
+  updateAt: string;
+  body: string;
+  author: Profile;
+}
+
 export interface ResponseTags {
   tags: Array;
 }
@@ -35,4 +43,15 @@ export interface ResponseArticles {
 
 export interface ResponseArticle {
   article: Article;
+}
+
+export interface ResponseComments {
+  comments: Array;
+}
+
+export interface ResponseComment {
+  comment: Comment;
+}
+export interface RequestComment {
+  body: string;
 }

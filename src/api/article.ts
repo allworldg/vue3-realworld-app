@@ -1,7 +1,14 @@
 import requests from "@/utils/requests";
-import { ArticlesParams, ResponseArticle, ResponseArticles, ResponseTags } from "@/types/articles";
-import { TAGS, ARTICLES, FEED, FAVORITE } from "@/common/url";
-import { request } from "http";
+import {
+  ArticlesParams,
+  RequestComment,
+  ResponseArticle,
+  ResponseArticles,
+  ResponseComment,
+  ResponseComments,
+  ResponseTags,
+} from "@/types/articles";
+import { TAGS, ARTICLES, FEED, FAVORITE, COMMENTS } from "@/common/url";
 
 export function getArticle(slug: string): Promise<ResponseArticle> {
   return requests({
@@ -60,5 +67,29 @@ export function deleteArticle(slug: string): Promise<any> {
   return requests({
     method: "delete",
     url: `${ARTICLES}/${slug}`,
+  });
+}
+
+export function getComments(slug: string): Promise<ResponseComments> {
+  return requests({
+    method: "get",
+    url: `${ARTICLES}/${slug}/${COMMENTS}`,
+  });
+}
+
+export function postComment(comment: RequestComment, slug: string): Promise<ResponseComment> {
+  return requests({
+    method: "post",
+    url: `${ARTICLES}/${slug}/${COMMENTS}`,
+    data: {
+      comment,
+    },
+  });
+}
+
+export function deleteComment(id: number, slug: string): Promise<void> {
+  return requests({
+    method: "delete",
+    url: `${ARTICLES}/${slug}/${COMMENTS}/${id}`,
   });
 }

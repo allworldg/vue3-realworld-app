@@ -1,7 +1,7 @@
 import request from "@/utils/requests";
-import { ProfileResponse, UpdateUser, loginUser } from "@/types/user";
+import { ProfileResponse, UpdateUser, loginUser, RegisterUser } from "@/types/user";
 import { UserResponse } from "@/types/user";
-import { LOGIN, GETUSER, UPDATEUSER, PROFILES, FOLLOW } from "@/common/url";
+import { LOGIN, USER, PROFILES, FOLLOW, USERS } from "@/common/url";
 export function login(loginUser: loginUser): Promise<UserResponse> {
   return request({
     url: LOGIN,
@@ -12,9 +12,19 @@ export function login(loginUser: loginUser): Promise<UserResponse> {
   });
 }
 
+export function register(user: RegisterUser): Promise<UserResponse> {
+  return request({
+    url: USERS,
+    method: "post",
+    data: {
+      user,
+    },
+  });
+}
+
 export function getUser(): Promise<UserResponse> {
   return request({
-    url: GETUSER,
+    url: USER,
     method: "get",
     data: {},
   });
@@ -22,7 +32,7 @@ export function getUser(): Promise<UserResponse> {
 
 export function updateUser(data: UpdateUser): Promise<UserResponse> {
   return request({
-    url: UPDATEUSER,
+    url: USER,
     method: "put",
     data,
   });
@@ -41,9 +51,9 @@ export function follow(username: string): Promise<ProfileResponse> {
     method: "post",
   });
 }
-export function unfollow(username:string):Promise<ProfileResponse>{
+export function unfollow(username: string): Promise<ProfileResponse> {
   return request({
     url: `${PROFILES}/${username}/${FOLLOW}`,
     method: "delete",
-  })
+  });
 }

@@ -3,13 +3,19 @@ export interface loginUser {
   password: string;
 }
 
+export interface RegisterUser {
+  email: string;
+  username: string;
+  password: string;
+}
+
 export interface User {
   bio: string;
   email: string;
   image: string;
   token?: string;
   username: string;
-  password: string;
+  password?: string;
 }
 
 export interface UpdateUser {

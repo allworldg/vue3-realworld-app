@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { getCookie } from "./auth";
 const service: AxiosInstance = axios.create({
-  baseURL: "https://api.realworld.io/api/",
+  baseURL: import.meta.env.VITE_BASE_URL,
   timeout: 10000,
 });
 service.interceptors.request.use(

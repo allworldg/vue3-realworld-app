@@ -10,7 +10,7 @@
           <ul class="error-messages">
             <li>email or password is invalid</li>
           </ul>
-          <form>
+          <form @submit.prevent="handleLogin">
             <fieldset class="form-group">
               <input
                 id="Email"
@@ -18,8 +18,7 @@
                 required
                 v-model="email"
                 type="email"
-                placeholder="Email"
-              />
+                placeholder="Email" />
             </fieldset>
             <fieldset class="form-group">
               <input
@@ -27,15 +26,9 @@
                 v-model="password"
                 required
                 type="password"
-                placeholder="Password"
-              />
+                placeholder="Password" />
             </fieldset>
-            <button
-              class="btn btn-lg btn-primary pull-xs-right"
-              @click.prevent="handleLogin"
-            >
-              Sign in
-            </button>
+            <button type="submit" class="btn btn-lg btn-primary pull-xs-right">Sign in</button>
           </form>
         </div>
       </div>
@@ -61,7 +54,7 @@ function handleLogin() {
     userStore.setAuth(res.user);
     router.push({
       path: (route.query?.redirect as string) || "/",
-      replace:true
+      replace: true,
     });
   });
 }

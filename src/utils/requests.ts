@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import { getCookie } from "./auth";
 const service: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
-  timeout: 10000,
+  timeout: 100000,
 });
 service.interceptors.request.use(
   (config) => {
@@ -22,7 +22,6 @@ service.interceptors.response.use(
     return res.data;
   },
   (error) => {
-    console.error(error);
     return Promise.reject(error);
   }
 );

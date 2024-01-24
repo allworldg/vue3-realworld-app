@@ -8,15 +8,20 @@
             <RouterLink to="/register">Need an account?</RouterLink>
           </p>
           <ul class="error-messages">
-            <li>email or password is invalid</li>
+            <li v-for="(value, key) in errors">
+              {{ key }}:
+              <span v-for="(error, index) in value" :key="index">
+                {{ error }}
+              </span>
+            </li>
           </ul>
           <form @submit.prevent="handleLogin">
             <fieldset class="form-group">
               <input
                 id="Email"
                 class="form-control form-control-lg"
-                required
                 v-model="email"
+                required
                 type="email"
                 placeholder="Email" />
             </fieldset>
@@ -45,18 +50,23 @@ const route = useRoute();
 const router = useRouter();
 let email = ref<string>("");
 let password = ref<string>("");
+let errors = ref<Array<any>>([]);
 const userStore = useUserStore();
 function handleLogin() {
   login({
     email: email.value,
     password: password.value,
-  }).then((res) => {
-    userStore.setAuth(res.user);
-    router.push({
-      path: (route.query?.redirect as string) || "/",
-      replace: true,
+  })
+    .then((res) => {
+      userStore.setAuth(res.user);
+      router.push({
+        path: (route.query?.redirect as string) || "/",
+        replace: true,
+      });
+    })
+    .catch((e) => {
+      errors.value = e.response.data.errors;
     });
-  });
 }
 </script>
 

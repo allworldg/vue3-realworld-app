@@ -8,9 +8,15 @@
             <RouterLink :to="{ name: 'login' }">Have an account?</RouterLink>
           </p>
 
-          <!-- <ul class="error-messages">
-            <li>That email is already taken</li>
-          </ul> -->
+          
+          <ul class="error-messages">
+            <li v-for="(value, key) in errors">
+              {{ key }}
+              <span v-for="(item, index) in value" :key="index">
+                {{ item }}
+              </span>
+            </li>
+          </ul>
 
           <form @submit.prevent="handleRegister">
             <fieldset class="form-group">
@@ -56,13 +62,16 @@ let email = ref<string>("");
 let password = ref<string>("");
 const router = useRouter();
 const userStore = useUserStore();
+let errors = ref<Array<any>>([]);
 function handleRegister() {
-  register({ username: username.value, email: email.value, password: password.value }).then(
-    (res) => {
+  register({ username: username.value, email: email.value, password: password.value })
+    .then((res) => {
       userStore.setAuth(res.user);
       router.push({ path: "/" });
-    }
-  );
+    })
+    .catch((e) => {
+      errors.value = e.response.data.errors;
+    });
 }
 </script>
 

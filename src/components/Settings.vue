@@ -15,8 +15,7 @@
                   type="text"
                   class="form-control"
                   placeholder="URL of profile picture"
-                  v-model="user.image"
-                />
+                  v-model="user.image" />
               </fieldset>
               <fieldset class="form-group">
                 <input
@@ -25,8 +24,7 @@
                   class="form-control form-control-lg"
                   required
                   placeholder="Username"
-                  v-model="user.username"
-                />
+                  v-model="user.username" />
               </fieldset>
               <fieldset class="form-group">
                 <textarea
@@ -34,8 +32,7 @@
                   rows="8"
                   class="form-control form-control-lg"
                   placeholder="short bio about you"
-                  v-model="user.bio"
-                ></textarea>
+                  v-model="user.bio"></textarea>
               </fieldset>
               <fieldset class="form-group">
                 <input
@@ -44,8 +41,7 @@
                   required
                   type="email"
                   placeholder="Email"
-                  v-model="user.email"
-                />
+                  v-model="user.email" />
               </fieldset>
               <fieldset class="form-group">
                 <input
@@ -53,13 +49,9 @@
                   class="form-control form-control-lg"
                   type="password"
                   placeholder="New Password"
-                  v-model="newPassword"
-                />
+                  v-model="newPassword" />
               </fieldset>
-              <button
-                class="btn btn-lg btn-primary pull-xs-right"
-                @click.prevent="handleUpdate"
-              >
+              <button class="btn btn-lg btn-primary pull-xs-right" @click.prevent="handleUpdate">
                 Update Settings
               </button>
             </fieldset>

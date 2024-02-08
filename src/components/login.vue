@@ -9,7 +9,7 @@
           </p>
           <ul class="error-messages">
             <li v-for="(value, key) in errors">
-              {{ key }}:
+              {{ key }}
               <span v-for="(error, index) in value" :key="index">
                 {{ error }}
               </span>

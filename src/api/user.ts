@@ -14,7 +14,7 @@ export function login(loginUser: loginUser): Promise<UserResponse> {
 
 export function register(user: RegisterUser): Promise<UserResponse> {
   return request({
-    url: 'users/test',
+    url: 'users',
     method: "post",
     data: { user },
   });

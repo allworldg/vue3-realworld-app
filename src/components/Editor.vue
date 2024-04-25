@@ -3,31 +3,37 @@
     <div class="container page">
       <div class="row">
         <div class="col-md-10 offset-md-1 col-xs-12">
-          <!-- <ul class="error-messages">
-            <li>That title is required</li>
-          </ul> -->
-          <form>
+          <ul class="error-messages">
+            <li v-for="(value, key) in errors" :key="key">
+              <span>{{ key }}</span>
+              <span v-for="(error, index) in value" :key="index">{{ error }}</span>
+            </li>
+          </ul>
+          <form @submit.prevent="handleUpdateOrAddArticle" @keydown.enter.prevent="() => {}">
             <fieldset>
               <fieldset class="form-group">
                 <input
                   type="text"
                   class="form-control form-control-lg"
                   placeholder="Article Title"
-                  v-model="article.title" />
+                  v-model="article.title"
+                  required />
               </fieldset>
               <fieldset class="form-group">
                 <input
                   type="text"
                   class="form-control"
                   placeholder="What's this article about?"
-                  v-model="article.description" />
+                  v-model="article.description"
+                  required />
               </fieldset>
               <fieldset class="form-group">
                 <textarea
                   class="form-control"
                   rows="8"
                   placeholder="Write your article (in markdown)"
-                  v-model="article.body"></textarea>
+                  v-model="article.body"
+                  required></textarea>
               </fieldset>
               <fieldset class="form-group">
                 <input
@@ -35,7 +41,7 @@
                   class="form-control"
                   placeholder="Enter tags"
                   v-model="tag"
-                  @keyup.enter.prevent="handleAddTag" />
+                  @keyup.self.enter.prevent="handleAddTag" />
                 <div class="tag-list">
                   <span
                     class="tag-default tag-pill"
@@ -46,10 +52,7 @@
                   </span>
                 </div>
               </fieldset>
-              <button
-                class="btn btn-lg pull-xs-right btn-primary"
-                type="button"
-                @click="handleUpdateOrAddArticle">
+              <button class="btn btn-lg pull-xs-right btn-primary" type="submit">
                 Publish Article
               </button>
             </fieldset>
@@ -69,6 +72,7 @@ const props = defineProps<{ slug: string }>();
 let article = ref<Article>({ tagList: [] as Array<string> } as Article);
 let tag = ref<string>("");
 let router = useRouter();
+let errors = ref<Array<String>>([]);
 if (props.slug !== "") {
   getArticle(props.slug).then((res) => {
     article.value = res.article;
@@ -96,9 +100,13 @@ function handleUpdateOrAddArticle() {
       description,
       body,
       tagList,
-    }).then((res) => {
-      router.push({ name: "article", params: { slug: res.article.slug } });
-    });
+    })
+      .then((res) => {
+        router.push({ name: "article", params: { slug: res.article.slug } });
+      })
+      .catch((e) => {
+        errors.value = e.response.data.errors;
+      });
   }
 }
 function handleDeleteTag(tag: string) {

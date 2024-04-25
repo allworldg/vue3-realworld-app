@@ -37,7 +37,7 @@ export function addArticle(article: UpdateArticle): Promise<ResponseArticle> {
   });
 }
 
-export function updateArticle(article: UpdateArticle, slug: string): Promise<void> {
+export function updateArticle(article: UpdateArticle, slug: string): Promise<ResponseArticle> {
   return requests({
     method: "put",
     url: `${ARTICLES}/${slug}`,

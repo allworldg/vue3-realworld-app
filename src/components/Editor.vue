@@ -5,7 +5,7 @@
         <div class="col-md-10 offset-md-1 col-xs-12">
           <ul class="error-messages">
             <li v-for="(value, key) in errors" :key="key">
-              <span>{{ key }}</span>
+              <span>{{ key }}&nbsp;</span>
               <span v-for="(error, index) in value" :key="index">{{ error }}</span>
             </li>
           </ul>
@@ -91,8 +91,8 @@ function handleUpdateOrAddArticle() {
   }
   let { title, description, body, tagList } = article.value;
   if (props.slug !== "") {
-    updateArticle({ title, description, body, tagList }, props.slug).then(() => {
-      router.push({ name: "article", params: { slug: props.slug } });
+    updateArticle({ title, description, body, tagList }, props.slug).then((res) => {
+      router.push({ name: "article", params: { slug: res.article.slug } });
     });
   } else {
     addArticle({

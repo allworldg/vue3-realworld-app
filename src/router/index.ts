@@ -3,6 +3,7 @@ import { getCookie, removeCookie } from "@/utils/auth";
 import { useUserStore } from "@/store/index";
 import { getUser, getProfile } from "@/api/user";
 import Home from "@/components/Home.vue";
+import { AxiosError } from "axios";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
@@ -11,19 +12,19 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/login",
-    name:"login",
+    name: "login",
     component: () => import("@/components/login.vue"),
     children: [],
   },
   {
     path: "/register",
-    name:"register",
+    name: "register",
     component: () => import("@/components/register.vue"),
     children: [],
   },
   {
     path: "/article/:slug",
-    name:"article",
+    name: "article",
     component: () => import("@/components/Article.vue"),
     props: true,
     meta: {
@@ -99,11 +100,15 @@ router.beforeEach(async (to, _from, next) => {
           userStore.setAuth(response.user);
         }
         next();
-      } catch (error) {
-        console.error(error);
-        userStore.$reset();
-        removeCookie();
-        next({ path: "/" });
+      } catch (err) {
+        const error = err as AxiosError;
+        console.log("wrong!");
+        console.log(error);
+        if (error.response?.status === 403||error.response?.status===401) {
+          userStore.$reset();
+          removeCookie();
+          next({ path: "/" });
+        }
       }
     }
   } else {

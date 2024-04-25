@@ -22,6 +22,9 @@ service.interceptors.response.use(
     return res.data;
   },
   (error) => {
+    if (error.response && error.response.status === 403) {
+      
+    }
     return Promise.reject(error);
   }
 );

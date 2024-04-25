@@ -16,8 +16,7 @@
                   href=""
                   class="nav-link"
                   :class="{ active: curArticleTypes === FEED }"
-                  @click.prevent="handleGetFeedArticles"
-                >
+                  @click.prevent="handleGetFeedArticles">
                   Your Feed
                 </a>
               </li>
@@ -26,8 +25,7 @@
                   href=""
                   class="nav-link"
                   :class="{ active: curArticleTypes === GLOBAL }"
-                  @click.prevent="handleGetGlobalArticles"
-                >
+                  @click.prevent="handleGetGlobalArticles">
                   Global Feed
                 </a>
               </li>
@@ -35,8 +33,7 @@
                 <a
                   class="nav-link"
                   :class="{ active: curArticleTypes === TAG }"
-                  v-show="curTag !== ''"
-                >
+                  v-show="curTag !== ''">
                   {{ "#" + curTag }}
                 </a>
               </li>
@@ -47,12 +44,11 @@
           <div v-else>
             <Articles :articles="articles"></Articles>
           </div>
-          <div v-show="isShowPage && pages > range">
+          <div v-show="isShowPage && pages > 0">
             <AppPagination
               :pages="pages"
               :cur-page="curPage"
-              @change-page="changePage"
-            ></AppPagination>
+              @change-page="changePage"></AppPagination>
           </div>
         </div>
 
@@ -65,8 +61,7 @@
                 href=""
                 v-for="tag in tags"
                 class="tag-pill tag-default"
-                @click.prevent="handleGetTagArticles(tag)"
-              >
+                @click.prevent="handleGetTagArticles(tag)">
                 {{ tag }}
               </a>
             </div>
@@ -132,9 +127,6 @@ function changePage(page: number) {
   }
 }
 
-
-
-
 function handleGetGlobalArticles() {
   curPage.value = 1;
   curTag.value = "";
@@ -143,12 +135,17 @@ function handleGetGlobalArticles() {
   isShowPage.value = false;
   params.value.offset = curPage.value - 1;
   loading_articles.value = true;
-  getArticles(params.value).then((res) => {
-    loading_articles.value = false;
-    articles.value = res.articles;
-    pages.value = Math.ceil(res.articlesCount / range);
-    isShowPage.value = true;
-  });
+  getArticles(params.value)
+    .then((res) => {
+      loading_articles.value = false;
+      articles.value = res.articles;
+      pages.value = Math.ceil(res.articlesCount / range);
+      isShowPage.value = true;
+    })
+    .catch((e) => {
+      console.log(e);
+      loading_articles.value = false;
+    });
 }
 
 function handleGetFeedArticles() {
@@ -159,12 +156,16 @@ function handleGetFeedArticles() {
   params.value.tag = undefined;
   loading_articles.value = true;
   isShowPage.value = false;
-  getFeedArticles(params.value).then((res) => {
-    loading_articles.value = false;
-    articles.value = res.articles;
-    pages.value = Math.ceil(res.articlesCount / range);
-    isShowPage.value = true;
-  });
+  getFeedArticles(params.value)
+    .then((res) => {
+      loading_articles.value = false;
+      articles.value = res.articles;
+      pages.value = Math.ceil(res.articlesCount / range);
+      isShowPage.value = true;
+    })
+    .catch((e) => {
+      console.log("getFeed is wrong");
+    });
 }
 
 function handleGetTagArticles(tag: string) {
@@ -189,10 +190,15 @@ onMounted(() => {
   } else {
     handleGetGlobalArticles();
   }
-  getTags().then((res) => {
-    tags.value = res.tags;
-    loading_tags.value = false;
-  });
+  getTags()
+    .then((res) => {
+      tags.value = res.tags;
+      loading_tags.value = false;
+    })
+    .catch((e) => {
+      console.log("getTag error");
+      console.log(e);
+    });
 });
 </script>
 

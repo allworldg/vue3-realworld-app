@@ -32,6 +32,7 @@
                 'btn-primary': article.favorited,
                 'btn-outline-primary': !article.favorited,
               }"
+              :disabled="favorite_disable"
               @click="handleFavorite">
               <i class="ion-heart"></i>
               &nbsp; {{ isFavoritedArticle }} article
@@ -143,6 +144,7 @@ const slug = props.slug;
 let article = ref<Article>({} as Article);
 let author = ref<Profile>({} as Profile);
 let comments = ref<Array<CommentType>>([]);
+let favorite_disable = ref<boolean>(false);
 const userStore = useUserStore();
 const router = useRouter();
 let isCurrentUser = computed(() => {
@@ -183,13 +185,16 @@ function handleFavorite() {
   if (userStore.isLogined === false) {
     router.push({ path: "/login" });
   }
+  favorite_disable.value = true;
   if (article.value.favorited !== true) {
     addFavoriteArticle(article.value.slug).then((res) => {
       article.value = { ...res.article };
+      favorite_disable.value = false;
     });
   } else {
     unFavoriteArticle(article.value.slug).then((res) => {
       article.value = { ...res.article };
+      favorite_disable.value = false;
     });
   }
 }

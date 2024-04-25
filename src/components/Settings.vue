@@ -80,6 +80,7 @@ let isUpdating = ref<boolean>(false);
 let errors = ref<Array<String>>([]);
 function handleUpdate() {
   isUpdating.value = true;
+  errors.value = [];
   updateUser({
     user: {
       email: user.email,
@@ -95,6 +96,7 @@ function handleUpdate() {
     })
     .catch((e) => {
       errors.value.push(e.response.data);
+      isUpdating.value = false;
     });
 }
 function handleLogout() {

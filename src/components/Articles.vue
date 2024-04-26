@@ -17,8 +17,7 @@
         :disabled="disableIndex.includes(index)"
         class="btn btn-sm pull-xs-right"
         :class="{ 'btn-primary': article.favorited, 'btn-outline-primary': !article.favorited }"
-        @click="favoriteArticle(index)"
-      >
+        @click="favoriteArticle(index)">
         <i class="ion-heart"></i>
         {{ article.favoritesCount }}
       </button>
@@ -31,8 +30,7 @@
         <li
           class="tag-default tag-pill tag-outline"
           v-for="(item, index) in article.tagList"
-          :key="index"
-        >
+          :key="index">
           {{ item }}
         </li>
       </ul>

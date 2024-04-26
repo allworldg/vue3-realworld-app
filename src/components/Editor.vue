@@ -91,9 +91,13 @@ function handleUpdateOrAddArticle() {
   }
   let { title, description, body, tagList } = article.value;
   if (props.slug !== "") {
-    updateArticle({ title, description, body, tagList }, props.slug).then((res) => {
-      router.push({ name: "article", params: { slug: res.article.slug } });
-    });
+    updateArticle({ title, description, body, tagList }, props.slug)
+      .then((res) => {
+        router.push({ name: "article", params: { slug: res.article.slug } });
+      })
+      .catch((e) => {
+        errors.value = e.response.data.errors;
+      });
   } else {
     addArticle({
       title,

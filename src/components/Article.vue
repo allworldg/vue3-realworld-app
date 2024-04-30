@@ -74,7 +74,7 @@
         <div class="article-meta">
           <RouterLink :to="`/@${author.username}`"><img :src="author.image" /></RouterLink>
           <div class="info">
-            <a href="" class="author">{{ author.username }}</a>
+            <a :href="`/@${author.username}`" class="author">{{ author.username }}</a>
             <span class="date">{{ article.createdAt }}</span>
           </div>
           <span v-if="!isCurrentUser">

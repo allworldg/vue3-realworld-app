@@ -91,6 +91,7 @@ function handleUpdate() {
     },
   })
     .then((res) => {
+      console.log(res.user)
       userStore.setAuth(res.user);
       isUpdating.value = false;
     })

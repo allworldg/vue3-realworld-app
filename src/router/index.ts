@@ -81,7 +81,6 @@ const routes: RouteRecordRaw[] = [
   },
 ];
 const whiteList = ["/", "/login", "/register"];
-
 const router = createRouter({
   history: createWebHistory(),
   routes: routes,
@@ -104,7 +103,7 @@ router.beforeEach(async (to, _from, next) => {
         const error = err as AxiosError;
         console.log("wrong!");
         console.log(error);
-        if (error.response?.status === 403||error.response?.status===401) {
+        if (error.response?.status === 403 || error.response?.status === 401) {
           userStore.$reset();
           removeCookie();
           next({ path: "/" });

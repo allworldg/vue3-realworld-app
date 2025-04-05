@@ -12,16 +12,14 @@
             <button
               v-if="isCurrentUser"
               class="btn btn-sm btn-outline-secondary action-btn"
-              @click="handleUpdateProfile"
-            >
+              @click="handleUpdateProfile">
               <i class="ion-gear-a"></i>
               &nbsp; Edit Profile Settings
             </button>
             <button
               @click="handleFollow"
               v-else
-              class="btn btn-sm btn-outline-secondary action-btn"
-            >
+              class="btn btn-sm btn-outline-secondary action-btn">
               <i class="ion-plus-round"></i>
               &nbsp; {{ isFollowed }} {{ profile!.username }}
             </button>
@@ -39,17 +37,12 @@
                 <RouterLink
                   exact-active-class="active"
                   class="nav-link"
-                  :to="{ name: 'profileArticle' }"
-                >
+                  :to="{ name: 'profileArticle' }">
                   My Articles
                 </RouterLink>
               </li>
               <li class="nav-item">
-                <RouterLink
-                  class="nav-link"
-                  active-class="active"
-                  :to="{ name: 'favorites' }"
-                >
+                <RouterLink class="nav-link" active-class="active" :to="{ name: 'favorites' }">
                   Favorited Articles
                 </RouterLink>
               </li>
@@ -101,10 +94,7 @@ function handleFollow() {
 
 onMounted(() => {
   profile.value = route.meta.profile as Profile;
-  if (
-    !userStore.getIsLogined ||
-    userStore.getUser?.username !== profile.value.username
-  ) {
+  if (!userStore.getIsLogined || userStore.getUser?.username !== profile.value.username) {
     isCurrentUser.value = false;
   } else {
     isCurrentUser.value = true;
@@ -117,10 +107,7 @@ watch(
     getProfile(newUserName as string)
       .then((res) => {
         profile.value = res.profile;
-        if (
-          !userStore.getIsLogined ||
-          userStore.getUser?.username !== profile.value.username
-        ) {
+        if (!userStore.getIsLogined || userStore.getUser?.username !== profile.value.username) {
           isCurrentUser.value = false;
         } else {
           isCurrentUser.value = true;
